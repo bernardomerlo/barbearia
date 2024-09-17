@@ -7,19 +7,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_cliente = $_POST["nome_cliente"];
     $telefone_cliente = $_POST["telefone_cliente"];
     $data = $_POST["data"];
-    $cliente = $_SERVER["REMOTE_ADDR"];
+    $horario = $_POST["horarios"];
+    $cliente_ip = $_SERVER["REMOTE_ADDR"];
+    $tipo_corte = $_POST["tipo_corte"];
 
-    // Inserir os dados no banco (descomentando a linha abaixo quando necessário)
-    // $db->insert("INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente) VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente)", [
-    //     "nome_cliente" => $nome_cliente,
-    //     "telefone_cliente" => $telefone_cliente,
-    //     "data" => $data,
-    //     "id_barbeiro" => $id_barbeiro,
-    //     "cliente" => $cliente
-    // ]);
+    try {
+        $db->beginTransaction();
+
+        $db->insert(
+            "INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente, horario, tipo_corte) 
+            VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
+            [
+                "nome_cliente" => $nome_cliente,
+                "telefone_cliente" => $telefone_cliente,
+                "data" => $data,
+                "id_barbeiro" => $id_barbeiro,
+                "cliente" => $cliente_ip,
+                "horario" => $horario,
+                "tipo_corte" => $tipo_corte
+            ]
+        );
+        $db->endTransaction();
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "Erro ao agendar corte: " . $e->getMessage();
+    }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -27,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Agendamento</title>
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -140,12 +156,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <label for="id_barbeiro">Barbeiros Disponíveis:</label>
-        <select name="id_barbeiro" id="id_barbeiro" required onchange="trocarImagemBarbeiro()">
+        <select name="id_barbeiro" id="id_barbeiro" required onchange="atualizarHorarios()">
             <option value="">Selecione um barbeiro</option>
             <?php
             $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
             foreach ($barbeiros as $barbeiro) {
                 echo "<option value='" . htmlspecialchars($barbeiro->id) . "' data-foto='" . htmlspecialchars($barbeiro->foto) . "'>" . htmlspecialchars($barbeiro->nome) . "</option>";
+            }
+            ?>
+        </select>
+
+        <label for="data">Data:</label>
+        <input type="date" name="data" id="data" required onchange="atualizarHorarios()">
+
+        <label for="horarios">Horários Disponíveis</label>
+        <select name="horarios" id="horarios" required>
+            <option value="">Selecione um horário</option>
+        </select>
+
+        <label for="tipo_corte">Corte</label>
+        <select name="tipo_corte" id="tipo_corte" required>
+            <?php
+            $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
+            foreach ($tipos_corte as $tipo_corte) {
+                echo "<option value='" . htmlspecialchars($tipo_corte->id) . "'>" . htmlspecialchars($tipo_corte->nome) . "</option>";
             }
             ?>
         </select>
@@ -156,20 +190,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="telefone_cliente">Telefone do cliente:</label>
         <input type="text" name="telefone_cliente" id="telefone_cliente" required>
 
-        <label for="data">Data:</label>
-        <input type="date" name="data" id="data" required>
-
         <button type="submit">Agendar</button>
     </form>
 
     <script>
+        function atualizarHorarios() {
+            var idBarbeiro = document.getElementById('id_barbeiro').value;
+            var dataAgendamento = document.getElementById('data').value;
+
+            if (idBarbeiro && dataAgendamento) {
+                // Faz uma requisição AJAX para buscar os horários disponíveis
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "buscar_horarios.php?id_barbeiro=" + idBarbeiro + "&data=" + dataAgendamento, true);
+                xhr.onload = function() {
+                    if (this.status == 200) {
+                        var horarios = JSON.parse(this.responseText);
+                        var horariosSelect = document.getElementById('horarios');
+                        horariosSelect.innerHTML = "<option value=''>Selecione um horário</option>"; // Limpa os horários antigos
+
+                        horarios.forEach(function(horario) {
+                            var option = document.createElement('option');
+                            option.value = horario;
+                            option.text = horario;
+                            horariosSelect.appendChild(option);
+                        });
+                    }
+                };
+                xhr.send();
+            }
+        }
+
         function trocarImagemBarbeiro() {
-            // Obter o barbeiro selecionado
             var select = document.getElementById('id_barbeiro');
             var selectedOption = select.options[select.selectedIndex];
             var fotoUrl = selectedOption.getAttribute('data-foto');
 
-            // Atualizar a imagem do barbeiro
             var barbeiroFoto = document.getElementById('barbeiroFoto');
             if (fotoUrl) {
                 barbeiroFoto.src = fotoUrl;

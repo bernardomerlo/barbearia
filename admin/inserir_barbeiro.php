@@ -5,9 +5,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $nome = $_POST["nome"];
     $senha = $_POST["senha"];
+    $barbearia = $_GET["id"];
 
     $db = new Database();
-    $db->insert("INSERT INTO barbeiros (nome, senha) VALUES (:nome, :senha)", [":nome" => $nome, ":senha" => password_hash($senha, PASSWORD_DEFAULT)]);
+    $db->insert(
+        "INSERT INTO barbeiros (nome, senha, id_barbearia) VALUES (:nome, :senha, :barbearia)",
+        ["nome" => $nome, "senha" => password_hash($senha, PASSWORD_DEFAULT), "barbearia" => $barbearia]
+    );
 }
 ?>
 <form method="POST" action="">

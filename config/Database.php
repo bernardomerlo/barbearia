@@ -8,7 +8,7 @@ class Database
     public function __construct()
     {
         try {
-            $this->conn = new PDO("mysql:host=127.0.0.1;dbname=barbearia", "bamsoares", "root");
+            $this->conn = new PDO("mysql:host=sql102.infinityfree.com;dbname=if0_37338099_barbearia", "if0_37338099", "bJMISSC1S7PrcqJ", [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             throw new \Exception("Query failed: " . $e->getMessage());

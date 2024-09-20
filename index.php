@@ -1,38 +1,21 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+
 require_once "config/Database.php";
 $db = new Database();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_barbeiro = $_POST["id_barbeiro"];
-    $nome_cliente = $_POST["nome_cliente"];
-    $telefone_cliente = $_POST["telefone_cliente"];
-    $data = $_POST["data"];
-    $horario = $_POST["horarios"];
-    $cliente_ip = $_SERVER["REMOTE_ADDR"];
-    $tipo_corte = $_POST["tipo_corte"];
-
-    try {
-        $db->beginTransaction();
-
-        $db->insert(
-            "INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente, horario, tipo_corte) 
-            VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
-            [
-                "nome_cliente" => $nome_cliente,
-                "telefone_cliente" => $telefone_cliente,
-                "data" => $data,
-                "id_barbeiro" => $id_barbeiro,
-                "cliente" => $cliente_ip,
-                "horario" => $horario,
-                "tipo_corte" => $tipo_corte
-            ]
-        );
-        $db->endTransaction();
-    } catch (Exception $e) {
-        $db->rollBack();
-        echo "Erro ao agendar corte: " . $e->getMessage();
-    }
+if (!isset($_GET["id"])) {
+    header("Location: selecionar_barbearia.php");
+    exit();
 }
+
+$agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+
+if ($agendado) {
+    include "visualiza_agendado.php";
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -46,21 +29,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            background-color: #1e1e1e;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: #4b4b4b;
+            min-height: 100vh;
         }
 
         form {
-            background-color: #f5f5f5;
+            background-color: #2e2e2e;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 600px;
         }
@@ -69,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #333;
+            color: #fff;
         }
 
         .barbeiro-imagem {
@@ -84,48 +65,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 10px;
         }
 
-        select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            color: #333;
-            font-size: 16px;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #a67c52;
-            box-shadow: 0 0 5px rgba(166, 124, 82, 0.5);
-        }
-
+        select,
         input[type="text"],
         input[type="date"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 15px;
-            border: 2px solid #ccc;
+            border: none;
             border-radius: 5px;
-            background-color: #fff;
-            color: #333;
+            background-color: #3e3e3e;
+            color: #fff;
             font-size: 16px;
         }
 
+        select:focus,
         input[type="text"]:focus,
         input[type="date"]:focus {
             outline: none;
-            border-color: #a67c52;
-            box-shadow: 0 0 5px rgba(166, 124, 82, 0.5);
+            border: 1px solid #5e5e5e;
         }
 
         button {
             width: 100%;
             padding: 10px;
-            background-color: #a67c52;
+            background-color: #5e5e5e;
             border: none;
-            color: white;
+            color: #fff;
             font-size: 16px;
             font-weight: bold;
             border-radius: 5px;
@@ -134,29 +99,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         button:hover {
-            background-color: #7a5638;
+            background-color: #7e7e7e;
+        }
+
+        button[disabled] {
+            background-color: #4e4e4e;
+            cursor: not-allowed;
         }
 
         h1 {
-            color: #a67c52;
+            color: #fff;
             text-align: center;
             font-size: 24px;
+        }
+
+        .spinner {
+            display: none;
+            width: 25px;
+            height: 25px;
+            border: 4px solid #fff;
+            border-top: 4px solid #5e5e5e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <form method="POST" action="">
-        <h1>Bem-vindo à Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
-        <h1>Agendar Corte</h1>
+    <form method="POST" action="agendar_corte.php" id="agendamentoForm">
+        <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
 
         <div class="barbeiro-imagem">
             <img id="barbeiroFoto" src="" alt="Foto do barbeiro">
         </div>
 
         <label for="id_barbeiro">Barbeiros Disponíveis:</label>
-        <select name="id_barbeiro" id="id_barbeiro" required onchange="atualizarHorarios()">
+        <select name="id_barbeiro" id="id_barbeiro" required>
             <option value="">Selecione um barbeiro</option>
             <?php
             $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
@@ -167,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <label for="data">Data:</label>
-        <input type="date" name="data" id="data" required onchange="atualizarHorarios()">
+        <input type="date" name="data" id="data" required>
 
         <label for="horarios">Horários Disponíveis</label>
         <select name="horarios" id="horarios" required>
@@ -184,58 +175,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ?>
         </select>
 
-        <label for="nome_cliente">Nome do cliente:</label>
+        <label for="nome_cliente">Seu nome:</label>
         <input type="text" name="nome_cliente" id="nome_cliente" required>
 
-        <label for="telefone_cliente">Telefone do cliente:</label>
+        <label for="telefone_cliente">Telefone:</label>
         <input type="text" name="telefone_cliente" id="telefone_cliente" required>
 
         <button type="submit">Agendar</button>
+        <div class="spinner" id="spinner"></div>
     </form>
 
     <script>
-        function atualizarHorarios() {
-            var idBarbeiro = document.getElementById('id_barbeiro').value;
-            var dataAgendamento = document.getElementById('data').value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const nomeClienteInput = document.getElementById('nome_cliente');
+            const telefoneClienteInput = document.getElementById('telefone_cliente');
+            const idBarbeiroSelect = document.getElementById('id_barbeiro');
+            const dataInput = document.getElementById('data');
+            const horariosSelect = document.getElementById('horarios');
+            const form = document.getElementById('agendamentoForm');
+            const spinner = document.getElementById('spinner');
 
-            if (idBarbeiro && dataAgendamento) {
-                // Faz uma requisição AJAX para buscar os horários disponíveis
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "buscar_horarios.php?id_barbeiro=" + idBarbeiro + "&data=" + dataAgendamento, true);
-                xhr.onload = function() {
-                    if (this.status == 200) {
-                        var horarios = JSON.parse(this.responseText);
-                        var horariosSelect = document.getElementById('horarios');
-                        horariosSelect.innerHTML = "<option value=''>Selecione um horário</option>"; // Limpa os horários antigos
+            // Carrega nome e telefone do cliente do localStorage
+            if (localStorage.getItem('nome_cliente')) {
+                nomeClienteInput.value = localStorage.getItem('nome_cliente');
+            }
+            if (localStorage.getItem('telefone_cliente')) {
+                telefoneClienteInput.value = localStorage.getItem('telefone_cliente');
+            }
 
-                        horarios.forEach(function(horario) {
-                            var option = document.createElement('option');
-                            option.value = horario;
-                            option.text = horario;
-                            horariosSelect.appendChild(option);
+            // Salva nome e telefone no localStorage ao alterar
+            nomeClienteInput.addEventListener('input', function() {
+                localStorage.setItem('nome_cliente', nomeClienteInput.value);
+            });
+
+            telefoneClienteInput.addEventListener('input', function() {
+                localStorage.setItem('telefone_cliente', telefoneClienteInput.value);
+            });
+
+            // Troca a imagem do barbeiro selecionado
+            idBarbeiroSelect.addEventListener('change', function() {
+                const fotoUrl = idBarbeiroSelect.options[idBarbeiroSelect.selectedIndex].getAttribute('data-foto');
+                const barbeiroFoto = document.getElementById('barbeiroFoto');
+                barbeiroFoto.src = fotoUrl ? fotoUrl : 'imgs/default_image_barbeiro.png';
+                atualizarHorarios(); // Atualiza os horários disponíveis
+            });
+
+            // Atualiza os horários disponíveis ao selecionar barbeiro ou data
+            dataInput.addEventListener('change', atualizarHorarios);
+
+            function atualizarHorarios() {
+                const idBarbeiro = idBarbeiroSelect.value;
+                const dataAgendamento = dataInput.value;
+
+                if (idBarbeiro && dataAgendamento) {
+                    fetch(`buscar_horarios.php?id_barbeiro=${idBarbeiro}&data=${dataAgendamento}`)
+                        .then(response => response.json())
+                        .then(horarios => {
+                            horariosSelect.innerHTML = "<option value=''>Selecione um horário</option>";
+                            horarios.forEach(horario => {
+                                const option = document.createElement('option');
+                                option.value = horario;
+                                option.text = horario;
+                                horariosSelect.appendChild(option);
+                            });
                         });
-                    }
-                };
-                xhr.send();
+                }
             }
-        }
 
-        function trocarImagemBarbeiro() {
-            var select = document.getElementById('id_barbeiro');
-            var selectedOption = select.options[select.selectedIndex];
-            var fotoUrl = selectedOption.getAttribute('data-foto');
+            // Máscara de telefone
+            telefoneClienteInput.addEventListener('input', function() {
+                let x = telefoneClienteInput.value.replace(/\D/g, '');
+                telefoneClienteInput.value = x.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            });
 
-            var barbeiroFoto = document.getElementById('barbeiroFoto');
-            if (fotoUrl) {
-                barbeiroFoto.src = fotoUrl;
-            } else {
-                barbeiroFoto.src = 'imgs/default_image_barbeiro.png';
-            }
-        }
-
-        window.onload = function() {
-            trocarImagemBarbeiro();
-        };
+            // Feedback visual ao submeter o formulário
+            form.addEventListener('submit', function(e) {
+                spinner.style.display = 'block'; // Mostra o spinner
+                form.querySelector('button').disabled = true; // Desabilita o botão
+            });
+        });
     </script>
 
 </body>

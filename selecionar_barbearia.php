@@ -8,7 +8,7 @@ if ($agendado) {
     include "visualiza_agendado.php";
     exit();
 }
-$barbearias = $db->select("SELECT id, nome FROM barbearias");
+$barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -60,6 +60,8 @@ $barbearias = $db->select("SELECT id, nome FROM barbearias");
             background-color: #7e7e7e;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 
 <body>
@@ -69,6 +71,11 @@ $barbearias = $db->select("SELECT id, nome FROM barbearias");
             <?php foreach ($barbearias as $barbearia): ?>
                 <div class="barbearia-card">
                     <h2><?php echo htmlspecialchars($barbearia->nome); ?></h2>
+                    <?php
+                    $result = $db->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
+                    $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
+                    ?>
+                    <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>
                     <form action="index.php" method="get">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->id); ?>">
                         <button type="submit">Acessar</button>

@@ -59,6 +59,30 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
         .barbearia-card button:hover {
             background-color: #7e7e7e;
         }
+
+        .barbeiro-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .barbeiro-button {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 10px;
+            background-color: #ffcc00;
+            color: #1e1e1e;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .barbeiro-button:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -87,6 +111,10 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
         <?php endif; ?>
     </div>
 
+    <div class="barbeiro-container">
+        <h3>É Barbeiro?</h3>
+        <a href="visualiza/index.php" class="barbeiro-button">Clique Aqui!</a>
+    </div>
 
 </body>
 

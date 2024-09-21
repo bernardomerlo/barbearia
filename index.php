@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 require_once "config/Database.php";
 $db = new Database();
 
-if(!isset($_COOKIE['visited'])){
+if (!isset($_COOKIE['visited'])) {
     include_once "splash_screen.php";
 }
 
@@ -199,7 +199,6 @@ if ($agendado) {
             const form = document.getElementById('agendamentoForm');
             const spinner = document.getElementById('spinner');
 
-            // Carrega nome e telefone do cliente do localStorage
             if (localStorage.getItem('nome_cliente')) {
                 nomeClienteInput.value = localStorage.getItem('nome_cliente');
             }
@@ -207,7 +206,6 @@ if ($agendado) {
                 telefoneClienteInput.value = localStorage.getItem('telefone_cliente');
             }
 
-            // Salva nome e telefone no localStorage ao alterar
             nomeClienteInput.addEventListener('input', function() {
                 localStorage.setItem('nome_cliente', nomeClienteInput.value);
             });
@@ -216,15 +214,13 @@ if ($agendado) {
                 localStorage.setItem('telefone_cliente', telefoneClienteInput.value);
             });
 
-            // Troca a imagem do barbeiro selecionado
             idBarbeiroSelect.addEventListener('change', function() {
                 const fotoUrl = idBarbeiroSelect.options[idBarbeiroSelect.selectedIndex].getAttribute('data-foto');
                 const barbeiroFoto = document.getElementById('barbeiroFoto');
                 barbeiroFoto.src = fotoUrl ? fotoUrl : 'imgs/default_image_barbeiro.png';
-                atualizarHorarios(); // Atualiza os horários disponíveis
+                atualizarHorarios();
             });
 
-            // Atualiza os horários disponíveis ao selecionar barbeiro ou data
             dataInput.addEventListener('change', atualizarHorarios);
 
             function atualizarHorarios() {
@@ -246,16 +242,14 @@ if ($agendado) {
                 }
             }
 
-            // Máscara de telefone
             telefoneClienteInput.addEventListener('input', function() {
                 let x = telefoneClienteInput.value.replace(/\D/g, '');
                 telefoneClienteInput.value = x.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
             });
 
-            // Feedback visual ao submeter o formulário
             form.addEventListener('submit', function(e) {
-                spinner.style.display = 'block'; // Mostra o spinner
-                form.querySelector('button').disabled = true; // Desabilita o botão
+                spinner.style.display = 'block';
+                form.querySelector('button').disabled = true;
             });
         });
     </script>

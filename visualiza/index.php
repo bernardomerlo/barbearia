@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user"])) {
-    header("Location: /visualiza/autentica.php");
+    header("Location: autentica.php");
     exit();
 }
 
@@ -91,12 +91,9 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             font-size: 18px;
         }
 
-        /* Melhorias para Mobile */
-        /* Melhorias para Mobile */
         @media (max-width: 600px) {
             .cortes-table {
                 display: none;
-                /* Esconder a tabela no mobile */
             }
 
             .corte-bloco {

@@ -4,6 +4,10 @@ header('Content-Type: text/html; charset=utf-8');
 require_once "config/Database.php";
 $db = new Database();
 
+if(!isset($_COOKIE['visited'])){
+    include_once "splash_screen.php";
+}
+
 if (!isset($_GET["id"])) {
     header("Location: selecionar_barbearia.php");
     exit();
@@ -143,7 +147,7 @@ if ($agendado) {
         <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
 
         <div class="barbeiro-imagem">
-            <img id="barbeiroFoto" src="" alt="Foto do barbeiro">
+            <img id="barbeiroFoto" src="imgs/default_image_barbeiro.png" alt="Foto do barbeiro">
         </div>
 
         <label for="id_barbeiro">Barbeiros Disponíveis:</label>

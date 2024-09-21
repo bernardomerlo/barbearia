@@ -13,10 +13,10 @@ if (!isset($_GET["id"])) {
     exit();
 }
 
-$agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+$agendado = $db->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
 
 if ($agendado) {
-    include "visualiza_agendado.php";
+    include "visualiza_agendado.php?id=" . $agendado->id;
     exit();
 }
 

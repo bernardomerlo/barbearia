@@ -113,7 +113,7 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
 
     <div class="barbeiro-container">
         <h3>É Barbeiro?</h3>
-        <a href="visualiza/index.php" class="barbeiro-button">Clique Aqui!</a>
+        <a href="admin/index.php" class="barbeiro-button">Clique Aqui!</a>
     </div>
 
 </body>

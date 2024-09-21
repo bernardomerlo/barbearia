@@ -91,6 +91,61 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             font-size: 18px;
         }
 
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2e2e2e;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #ff6666;
+        }
+
+        .sidebar a.inserir {
+            background-color: #04AA6D;
+        }
+
+        .sidebar a.inserir:hover {
+            background-color: #029b5a;
+        }
+
+        .sidebar a.remover {
+            background-color: #ff4d4d;
+        }
+
+        .sidebar a.remover:hover {
+            background-color: #ff6666;
+        }
+
+        .sidebar a.gerenciar {
+            background-color: #138496;
+        }
+
+        .sidebar a.gerenciar:hover {
+            background-color: #13708e;
+        }
+
         @media (max-width: 600px) {
             .cortes-table {
                 display: none;
@@ -147,6 +202,15 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
                 <button class="delete-btn">Remover</button>
             </div>
         <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($barbeiro->admin == 1): ?>
+        <div class="sidebar">
+            <h2>Opções:</h2>
+            <a href="gerenciar_barbeiros.php?id=<?= $barbeiro->id_barbearia ?>" class="gerenciar">Gerenciar Barbeiros</a>
+            <a href="inserir_barbeiro.php?id=<?= $barbeiro->id_barbearia ?>" class="inserir">Inserir Barbeiro</a>
+            <a href="remover_barbeiro.php" class="remover">Remover Barbeiro</a>
+        </div>
     <?php endif; ?>
 </body>
 

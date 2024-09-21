@@ -1,27 +1,34 @@
 <?php
-session_start();
 
-if (!isset($_SESSION["user"])) {
-    header("Location: autentica.php");
+if (!$id_barbearia = $_GET['id']) {
+    header('Location: index.php');
     exit();
 }
 
-require_once "../config/Database.php";
-
+include_once '../config/Database.php';
 $db = new Database();
 
-$barbeiro = $_SESSION["user"];
+$barbearia = $db->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
+$barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia", ['id_barbearia' => $id_barbearia]);
 
-$cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
+// Contar os cortes de cada barbeiro
+foreach ($barbeiros as $barbeiro) {
+    $cortes = $db->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
+    $barbeiro->total_cortes = $cortes->total_cortes;
+}
+
+
 ?>
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cortes de <?php echo htmlspecialchars($barbeiro->nome); ?></title>
+    <title>Barbeiros</title>
     <style>
+        /* O CSS que você forneceu vai aqui */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #1e1e1e;
@@ -42,7 +49,7 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
 
         .cortes-table {
             width: 100%;
-            max-width: 400px;
+            max-width: 800px;
             border-collapse: collapse;
             margin: 0 auto;
         }
@@ -87,6 +94,14 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             background-color: transparent;
             border: none;
             color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .altera-btn {
+            background-color: transparent;
+            border: none;
+            color: #f5cb42;
             cursor: pointer;
             font-size: 18px;
         }
@@ -189,29 +204,34 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
         <a href="logout.php">Sair</a>
     </div>
 
-    <h1>Cortes de <?php echo htmlspecialchars($barbeiro->nome); ?></h1>
+    <h1>Barbeiros da Barbearia <?= $barbearia->nome ?></h1>
 
-    <?php if (!$cortes): ?>
-        <p class="no-cortes">Nenhum corte cadastrado</p>
+    <?php if (count($barbeiros) > 0): ?>
+        <table class="cortes-table">
+            <thead>
+                <tr>
+                    <th>Nome do Barbeiro</th>
+                    <th>Cortes Agendados</th>
+                    <th>Remover</th>
+                    <th>Visualizar Cortes Agendados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($barbeiros as $barbeiro): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($barbeiro->nome, ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= $barbeiro->total_cortes ?></td>
+                        <td><button class="delete-btn">X</button></td>
+                        <td><button class="altera-btn">X</button></td>
+                        <!-- <td><a href="remove_barbeiro?id=<?= $barbeiro->id ?>" class="delete-link">X</a></td> -->
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     <?php else: ?>
-        <?php foreach ($cortes as $corte): ?>
-            <div class="corte-bloco">
-                <h2>Cliente: <?php echo htmlspecialchars($corte->nome_cliente); ?></h2>
-                <p>Data: <?php echo htmlspecialchars(date('d/m/Y', strtotime($corte->data_corte))); ?></p>
-                <p>Horário: <?php echo htmlspecialchars($corte->horario); ?></p>
-                <button class="delete-btn">Remover</button>
-            </div>
-        <?php endforeach; ?>
+        <p class="no-cortes">Nenhum barbeiro encontrado.</p>
     <?php endif; ?>
 
-    <?php if ($barbeiro->admin == 1): ?>
-        <div class="sidebar">
-            <h2>Opções:</h2>
-            <a href="gerenciar_barbearia.php?id=<?= $barbeiro->id_barbearia ?>" class="gerenciar">Gerenciar Barbearia</a>
-            <a href="inserir_barbeiro.php?id=<?= $barbeiro->id_barbearia ?>" class="inserir">Inserir Barbeiro</a>
-            <a href="remover_barbeiro.php" class="remover">Remover Barbeiro</a>
-        </div>
-    <?php endif; ?>
 </body>
 
 </html>

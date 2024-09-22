@@ -29,12 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "tipo_corte" => $tipo_corte
             ]
         );
-        $agendado = [
-            "id_barbeiro" => $id_barbeiro,
-            "tipo_corte" => $tipo_corte
-        ];
         $db->endTransaction();
-        header("Location: visualiza_agendado.php");
+        header("Location: visualiza_agendado.php?id=" . $id);
         exit();
     } catch (Exception $e) {
         $db->rollBack();

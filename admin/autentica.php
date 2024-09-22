@@ -14,8 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($user && password_verify($password, $user->senha)) {
                 $_SESSION["user"] = $user;
-
-                header("Location: /visualiza/index.php");
+                header("Location: index.php");
                 exit();
             } else {
                 $error = "Usuário ou senha inválidos";
@@ -47,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             align-items: center;
             height: 100vh;
             padding: 10px;
-            /* Adicionado padding para evitar toques nas bordas */
             box-sizing: border-box;
         }
 
@@ -91,18 +89,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             outline: none;
             border: 1px solid #5e5e5e;
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-            /* Efeito de destaque */
         }
 
         .login-form button {
             width: 100%;
             padding: 15px;
-            /* Aumentei o padding para facilitar o toque */
             background-color: #5e5e5e;
             border: none;
             color: #fff;
             font-size: 18px;
-            /* Fonte maior para botões em mobile */
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;

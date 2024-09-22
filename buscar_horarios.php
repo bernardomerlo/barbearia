@@ -18,7 +18,6 @@ if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {
         ["id_barbeiro" => $id_barbeiro, "data" => $data]
     );
 
-    // Envia os horários em formato JSON para o JavaScript
     $horariosDisponiveis = [];
     foreach ($horarios as $horario) {
         $horariosDisponiveis[] = $horario->horario;

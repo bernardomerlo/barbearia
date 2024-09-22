@@ -1,7 +1,15 @@
 <?php
 
-$barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $agendado->id_barbeiro]);
-$corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $agendado->tipo_corte]);
+if ($_GET["id"]) {
+    include_once "config/Database.php";
+    $db = new Database();
+    $id = $_GET["id"];
+    $corte_agendado = $db->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
+    $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
+    $tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -89,17 +97,17 @@ $corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $a
         <h1>Seu Próximo Corte!</h1>
 
         <div class="barbeiro-imagem">
-            <img src="/<?= $barbeiro->foto ?>" alt="Foto do barbeiro">
+            <img src="/barbearia/<?= $barbeiro->foto ?>" alt="Foto do barbeiro">
         </div>
 
         <div class="details">
             <p><strong>Barbeiro:</strong> <?= htmlspecialchars($barbeiro->nome) ?></p>
-            <p><strong>Data:</strong> <?= date("d/m/Y", strtotime($agendado->data_corte)) ?> às <?= htmlspecialchars($agendado->horario) ?></p>
-            <p><strong>Corte:</strong> <?= htmlspecialchars($corte->nome) ?></p>
+            <p><strong>Data:</strong> <?= date("d/m/Y", strtotime($corte_agendado->data_corte)) ?> às <?= htmlspecialchars($corte_agendado->horario) ?></p>
+            <p><strong>Corte:</strong> <?= htmlspecialchars($tipo_corte->nome) ?></p>
         </div>
 
         <div class="center">
-            <button onclick="window.location.href='cancelar_agendamento.php?id=<?= htmlspecialchars($agendado->id) ?>'">Cancelar Agendamento</button>
+            <button onclick="window.location.href='cancelar_agendamento.php?id=<?= htmlspecialchars($corte_agendado->id) ?>'">Cancelar Agendamento</button>
         </div>
     </div>
 

@@ -1,9 +1,12 @@
 <?php
+session_start();
 
-if (!$id_barbearia = $_GET['id']) {
+if (!$_SESSION["user"]->id_barbearia) {
     header('Location: index.php');
     exit();
 }
+
+$id_barbearia = $_SESSION["user"]->id_barbearia;
 
 include_once '../config/Database.php';
 $db = new Database();
@@ -11,7 +14,6 @@ $db = new Database();
 $barbearia = $db->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
 $barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia", ['id_barbearia' => $id_barbearia]);
 
-// Contar os cortes de cada barbeiro
 foreach ($barbeiros as $barbeiro) {
     $cortes = $db->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
     $barbeiro->total_cortes = $cortes->total_cortes;
@@ -28,7 +30,6 @@ foreach ($barbeiros as $barbeiro) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbeiros</title>
     <style>
-        /* O CSS que você forneceu vai aqui */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #1e1e1e;
@@ -94,14 +95,6 @@ foreach ($barbeiros as $barbeiro) {
             background-color: transparent;
             border: none;
             color: #ff4d4d;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .altera-btn {
-            background-color: transparent;
-            border: none;
-            color: #f5cb42;
             cursor: pointer;
             font-size: 18px;
         }
@@ -196,15 +189,62 @@ foreach ($barbeiros as $barbeiro) {
                 font-size: 18px;
             }
         }
+
+        .delete-btn a {
+            color: #fff;
+            text-decoration: none;
+            background-color: #ff4d4d;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn a:hover {
+            background-color: #ff6666;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .inserir {
+            display: inline-block;
+            background-color: #04AA6D;
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .inserir:hover {
+            background-color: #029b5a;
+            transform: translateY(-3px);
+            box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .inserir:active {
+            transform: translateY(0);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
     <div class="logout-btn">
-        <a href="logout.php">Sair</a>
+        <a href="index.php">Voltar</a>
     </div>
 
-    <h1>Barbeiros da Barbearia <?= $barbearia->nome ?></h1>
+    <h1>Barbeiros da <?= $barbearia->nome ?></h1>
 
     <?php if (count($barbeiros) > 0): ?>
         <table class="cortes-table">
@@ -213,7 +253,6 @@ foreach ($barbeiros as $barbeiro) {
                     <th>Nome do Barbeiro</th>
                     <th>Cortes Agendados</th>
                     <th>Remover</th>
-                    <th>Visualizar Cortes Agendados</th>
                 </tr>
             </thead>
             <tbody>
@@ -221,9 +260,7 @@ foreach ($barbeiros as $barbeiro) {
                     <tr>
                         <td><?= htmlspecialchars($barbeiro->nome, ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= $barbeiro->total_cortes ?></td>
-                        <td><button class="delete-btn">X</button></td>
-                        <td><button class="altera-btn">X</button></td>
-                        <!-- <td><a href="remove_barbeiro?id=<?= $barbeiro->id ?>" class="delete-link">X</a></td> -->
+                        <td><button class="delete-btn"><a href="remover_barbeiro.php?id=<?= $barbeiro->id ?>">X</a></button></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -231,6 +268,12 @@ foreach ($barbeiros as $barbeiro) {
     <?php else: ?>
         <p class="no-cortes">Nenhum barbeiro encontrado.</p>
     <?php endif; ?>
+
+
+    <div>
+        <a href="formulario_barbeiro.php" class="inserir">Inserir Barbeiro</a>
+    </div>
+
 
 </body>
 

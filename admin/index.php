@@ -207,9 +207,7 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
     <?php if ($barbeiro->admin == 1): ?>
         <div class="sidebar">
             <h2>Opções:</h2>
-            <a href="gerenciar_barbearia.php?id=<?= $barbeiro->id_barbearia ?>" class="gerenciar">Gerenciar Barbearia</a>
-            <a href="inserir_barbeiro.php?id=<?= $barbeiro->id_barbearia ?>" class="inserir">Inserir Barbeiro</a>
-            <a href="remover_barbeiro.php" class="remover">Remover Barbeiro</a>
+            <a href="gerenciar_barbearia.php" class="gerenciar">Gerenciar Barbearia</a>
         </div>
     <?php endif; ?>
 </body>

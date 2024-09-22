@@ -67,28 +67,6 @@ VALUES (
         1
     );
 
-INSERT INTO
-    `barbeiros`
-VALUES (
-        2,
-        'admin',
-        '$2y$10$OXZA3S5qMCak3pKwwHVD2OL0oOFT2PQ4VOqOZ/QYf29eI5YvAtPJa',
-        2,
-        'imgs/default_image_barbeiro.png',
-        1
-    );
-
-INSERT INTO
-    `barbeiros`
-VALUES (
-        3,
-        'admin',
-        '$2y$10$OXZA3S5qMCak3pKwwHVD2OL0oOFT2PQ4VOqOZ/QYf29eI5YvAtPJa',
-        3,
-        'imgs/default_image_barbeiro.png',
-        1
-    );
-
 -- ----------------------------
 -- Table structure for cortes
 -- ----------------------------
@@ -241,7 +219,12 @@ INSERT INTO `tipos_cortes` VALUES (5, 'Barba');
 
 INSERT INTO `tipos_cortes` VALUES (6, 'Bigode');
 
-INSERT INTO `tipos_cortes` VALUES (8, 'Completo (Barba, Cabelo e Bigode)');
+INSERT INTO
+    `tipos_cortes`
+VALUES (
+        8,
+        'Completo (Barba, Cabelo e Bigode)'
+    );
 
 INSERT INTO `tipos_cortes` VALUES (7, 'Pintar');
 

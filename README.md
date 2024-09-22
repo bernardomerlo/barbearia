@@ -76,3 +76,4 @@ Este projeto é um sistema de gerenciamento de barbearia que permite agendar cor
 
 - Para agendar um corte, acesse [`localhost/barbearia`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2Fxampp%2Fhtdocs%2Fbarbearia%2Fagendamento%2Fagendar_corte.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\\xampp\htdocs\barbearia\index.php").
 - Para gerenciar quais cortes voce já tem agendado e seus barbeiros (caso voce seja admnistrador), acesse [`admin/gerenciar_barbearia.php`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2Fxampp%2Fhtdocs%2Fbarbearia%2Fadmin%2Fgerenciar_barbearia.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\\xampp\htdocs\barbearia\admin\gerenciar_barbearia.php").
+  - Para fazer login com o usuário master, basta usar a senha e login "**admin**"

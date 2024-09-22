@@ -1,16 +1,13 @@
 <?php
 session_start();
-require_once "../config/Database.php"; // Ajuste o caminho conforme necessário
+require_once "../../config/Database.php";
 
-// Verifica se o usuário está autenticado
 if (!isset($_SESSION["user"])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
-
-// Verifica se o ID do barbeiro foi passado na URL
 if (!isset($_GET['id']) || intval($_GET['id']) <= 0) {
-    header("Location: gerenciar_barbearia.php");
+    header("Location: ../gerenciar_barbearia.php");
     exit();
 }
 
@@ -18,18 +15,13 @@ $id_barbeiro = intval($_GET['id']);
 
 try {
     $db = new Database();
-    // Busca o barbeiro pelo ID
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
-        // Se o barbeiro não for encontrado, redireciona
-        header("Location: gerenciar_barbearia.php");
+        header("Location: ../gerenciar_barbearia.php");
         exit();
     }
 } catch (Exception $e) {
-    // Log de erro para análise
-    error_log("Erro ao buscar barbeiro com ID $id_barbeiro: " . $e->getMessage());
-    header("Location: erro.php");
     exit();
 }
 
@@ -179,7 +171,7 @@ try {
         <a href="gerenciar_barbearia.php">Voltar</a>
     </div>
 
-    <form class="register-form" method="POST" enctype="multipart/form-data" action="editar_barbeiro.php">
+    <form class="register-form" method="POST" enctype="multipart/form-data" action="../barbeiro/editar_barbeiro.php">
         <h1>Editar Barbeiro</h1>
 
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbeiro->id); ?>">

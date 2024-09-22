@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user"])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -173,10 +173,10 @@ if (!isset($_SESSION["user"])) {
 
 <body>
     <div class="logout-btn">
-        <a href="gerenciar_barbearia.php">Voltar</a>
+        <a href="../gerenciar_barbearia.php">Voltar</a>
     </div>
 
-    <form class="register-form" method="POST" enctype="multipart/form-data" action="inserir_barbeiro.php">
+    <form class="register-form" method="POST" enctype="multipart/form-data" action="../barbeiro/inserir_barbeiro.php">
         <h1>Inserir novo Barbeiro</h1>
 
         <?php if (isset($error)): ?>

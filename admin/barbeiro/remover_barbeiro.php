@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-require_once "../config/Database.php";
+require_once "../../config/Database.php";
 
 if (!isset($_SESSION["user"])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -19,13 +19,13 @@ try {
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
-        header("Location: gerenciar_barbearia.php");
+        header("Location: ../gerenciar_barbearia.php");
         exit();
     }
 
     $db->delete("DELETE FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
-    header("Location: gerenciar_barbearia.php");
+    header("Location: ../gerenciar_barbearia.php");
     exit();
 } catch (Exception $e) {
     echo "Erro ao remover barbeiro: " . $e->getMessage();

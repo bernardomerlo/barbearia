@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../config/Database.php";
+require_once "../../config/Database.php";
 
 if (!isset($_SESSION["user"])) {
     header("Location: index.php");
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
                 $foto = $foto_destino_relativo;
             } else {
                 $_SESSION['error'] = "Erro ao fazer upload da foto.";
-                header("Location: formulario_editar_barbeiro.php?id=$id_barbeiro");
+                header("Location: ../forms/formulario_editar_barbeiro.php?id=$id_barbeiro");
                 exit();
             }
         }
@@ -50,15 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
         $db->update($sql, $params);
 
         $_SESSION['success'] = "Barbeiro atualizado com sucesso!";
-        header("Location: gerenciar_barbearia.php");
+        header("Location: ../gerenciar_barbearia.php");
         exit();
     } catch (Exception $e) {
         error_log("Erro ao editar barbeiro com ID $id_barbeiro: " . $e->getMessage());
         $_SESSION['error'] = "Erro ao editar barbeiro.";
-        header("Location: formulario_editar_barbeiro.php?id=$id_barbeiro");
+        header("Location: ../forms/formulario_editar_barbeiro.php?id=$id_barbeiro");
         exit();
     }
 } else {
-    header("Location: gerenciar_barbearia.php");
+    header("Location: ../gerenciar_barbearia.php");
     exit();
 }

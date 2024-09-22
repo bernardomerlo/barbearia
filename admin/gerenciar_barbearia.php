@@ -193,7 +193,7 @@ foreach ($barbeiros as $barbeiro) {
         .delete-btn a {
             color: #fff;
             text-decoration: none;
-            background-color: #ff4d4d;
+            background-color: #007BFF;
             padding: 10px 15px;
             border-radius: 5px;
             display: inline-block;
@@ -201,7 +201,7 @@ foreach ($barbeiros as $barbeiro) {
         }
 
         .delete-btn a:hover {
-            background-color: #ff6666;
+            background-color: #0056b3;
         }
 
         .delete-btn {

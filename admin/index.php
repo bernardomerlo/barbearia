@@ -13,6 +13,14 @@ $db = new Database();
 $barbeiro = $_SESSION["user"];
 
 $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
+
+// Função para remover o corte
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_corte"])) {
+    $id_corte = $_POST["id_corte"];
+    $db->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id_corte]);
+    header("Location: index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -37,36 +45,60 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
         h1 {
             text-align: center;
             margin-bottom: 30px;
-            font-size: 22px;
+            font-size: 24px;
         }
 
-        .cortes-table {
+        .cortes-list {
             width: 100%;
-            max-width: 400px;
-            border-collapse: collapse;
-            margin: 0 auto;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
         }
 
-        .cortes-table th,
-        .cortes-table td {
-            padding: 8px;
-            border: 1px solid #333;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .cortes-table th {
+        .corte-bloco {
             background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .cortes-table tr:nth-child(even) {
-            background-color: #2a2a2a;
+        .corte-bloco:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+        }
+
+        .corte-bloco h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+        }
+
+        .corte-bloco p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            color: #ff6666;
         }
 
         .no-cortes {
             text-align: center;
             font-size: 18px;
             color: #bbb;
+            margin-top: 50px;
         }
 
         .logout-btn {
@@ -81,14 +113,11 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             background-color: #ff4d4d;
             padding: 10px 15px;
             border-radius: 5px;
+            transition: background-color 0.2s ease;
         }
 
-        .delete-btn {
-            background-color: transparent;
-            border: none;
-            color: #ff4d4d;
-            cursor: pointer;
-            font-size: 18px;
+        .logout-btn a:hover {
+            background-color: #ff6666;
         }
 
         .sidebar {
@@ -116,6 +145,7 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             padding: 10px;
             text-align: center;
             border-radius: 5px;
+            transition: background-color 0.2s ease;
         }
 
         .sidebar a:hover {
@@ -146,39 +176,53 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
             background-color: #13708e;
         }
 
-        @media (max-width: 600px) {
-            .cortes-table {
-                display: none;
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+                margin-top: 20px;
+            }
+
+            .cortes-list {
+                width: 100%;
             }
 
             .corte-bloco {
-                width: 100%;
-                max-width: 600px;
-                background-color: #2e2e2e;
-                padding: 15px;
-                margin-bottom: 15px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-                color: #fff;
                 font-size: 16px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            .logout-btn a {
+                padding: 8px 10px;
             }
 
             .corte-bloco h2 {
                 font-size: 18px;
-                margin-bottom: 10px;
             }
 
             .corte-bloco p {
-                margin: 5px 0;
                 font-size: 14px;
             }
 
             .delete-btn {
-                background-color: transparent;
-                border: none;
-                color: #ff4d4d;
-                cursor: pointer;
-                font-size: 18px;
+                font-size: 16px;
+            }
+
+            .sidebar {
+                padding: 10px;
+            }
+
+            .sidebar a {
+                font-size: 14px;
+                padding: 8px;
             }
         }
     </style>
@@ -194,14 +238,20 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
     <?php if (!$cortes): ?>
         <p class="no-cortes">Nenhum corte cadastrado</p>
     <?php else: ?>
-        <?php foreach ($cortes as $corte): ?>
-            <div class="corte-bloco">
-                <h2>Cliente: <?php echo htmlspecialchars($corte->nome_cliente); ?></h2>
-                <p>Data: <?php echo htmlspecialchars(date('d/m/Y', strtotime($corte->data_corte))); ?></p>
-                <p>Horário: <?php echo htmlspecialchars($corte->horario); ?></p>
-                <button class="delete-btn">Remover</button>
-            </div>
-        <?php endforeach; ?>
+        <div class="cortes-list">
+            <?php foreach ($cortes as $corte): ?>
+                <div class="corte-bloco">
+                    <h2>Cliente: <?php echo htmlspecialchars($corte->nome_cliente); ?></h2>
+                    <p>Data: <?php echo htmlspecialchars(date('d/m/Y', strtotime($corte->data_corte))); ?></p>
+                    <p>Horário: <?php echo htmlspecialchars($corte->horario); ?></p>
+
+                    <form method="POST" onsubmit="return confirm('Tem certeza que deseja remover este corte?');">
+                        <input type="hidden" name="id_corte" value="<?php echo $corte->id; ?>">
+                        <button type="submit" class="delete-btn">Remover</button>
+                    </form>
+                </div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 
     <?php if ($barbeiro->admin == 1): ?>

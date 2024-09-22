@@ -90,13 +90,13 @@ try {
             padding: 10px 20px;
             text-decoration: none;
             color: #fff;
-            background-color: #3e8db8;
+            background-color: #FFA500;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         .button-group a:hover {
-            background-color: #3e6ab8;
+            background-color: #e69500;
         }
 
         .button-group .delete-btn {

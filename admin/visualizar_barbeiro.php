@@ -90,13 +90,13 @@ try {
             padding: 10px 20px;
             text-decoration: none;
             color: #fff;
-            background-color: #5e5e5e;
+            background-color: #3e8db8;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         .button-group a:hover {
-            background-color: #7e7e7e;
+            background-color: #3e6ab8;
         }
 
         .button-group .delete-btn {
@@ -133,7 +133,7 @@ try {
         <p>Total de Cortes: <?php echo $total_cortes; ?></p>
 
         <div class="button-group">
-            <a href="editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>">Editar</a>
+            <a href="formulario_editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>">Editar</a>
 
             <a href="remover_barbeiro.php?id=<?php echo $id_barbeiro; ?>" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este barbeiro? Todos os agendamentos dele serão removidos!')">Remover</a>
         </div>

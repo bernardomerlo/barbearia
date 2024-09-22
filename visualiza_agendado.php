@@ -1,15 +1,18 @@
 <?php
 
-if ($_GET["id"]) {
-    include_once "config/Database.php";
-    $db = new Database();
+include_once "config/Database.php";
+$db = new Database();
+
+if (isset($_GET["id"])) {
     $id = $_GET["id"];
     $corte_agendado = $db->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
-    $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
-    $tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
+} else {
+    $cliente = $_SERVER["REMOTE_ADDR"];
+    $corte_agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $cliente]);
 }
 
-
+$barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
+$tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
 ?>
 
 <!DOCTYPE html>

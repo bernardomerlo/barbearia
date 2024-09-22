@@ -237,6 +237,7 @@ foreach ($barbeiros as $barbeiro) {
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -252,7 +253,7 @@ foreach ($barbeiros as $barbeiro) {
                 <tr>
                     <th>Nome do Barbeiro</th>
                     <th>Cortes Agendados</th>
-                    <th>Remover</th>
+                    <th>Visualizar</th>
                 </tr>
             </thead>
             <tbody>
@@ -260,7 +261,7 @@ foreach ($barbeiros as $barbeiro) {
                     <tr>
                         <td><?= htmlspecialchars($barbeiro->nome, ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= $barbeiro->total_cortes ?></td>
-                        <td><button class="delete-btn"><a href="remover_barbeiro.php?id=<?= $barbeiro->id ?>">X</a></button></td>
+                        <td><button class="delete-btn"><a href="visualizar_barbeiro.php?id=<?= $barbeiro->id ?>"><i class="fa-solid fa-eye"></i></a></button></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

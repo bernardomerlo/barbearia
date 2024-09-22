@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $foto_nome = $_FILES['photo']['name'];
             $foto_tmp = $_FILES['photo']['tmp_name'];
             $foto_destino_relativo = "imgs/" . basename($foto_nome);
-            $foto_destino_absoluto = "../barbearia/" . $foto_destino_relativo;
+            $foto_destino_absoluto = "../" . $foto_destino_relativo;
 
             if (move_uploaded_file($foto_tmp, $foto_destino_absoluto)) {
                 $foto = $foto_destino_relativo;
@@ -33,12 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!isset($error)) {
             try {
                 $db = new Database();
-                $sql = "INSERT INTO barbeiros (nome, senha, foto, is_admin) VALUES (:nome, :senha, :foto, :is_admin)";
+                $sql = "INSERT INTO barbeiros (nome, senha, foto, admin, id_barbearia) VALUES (:nome, :senha, :foto, :admin, :id_barbearia)";
                 $params = [
                     "nome" => $nome,
                     "senha" => $hashed_password,
                     "foto" => $foto,
-                    "is_admin" => $is_admin
+                    "admin" => $is_admin,
+                    "id_barbearia" => $_SESSION["user"]->id_barbearia
                 ];
                 $db->insert($sql, $params);
 

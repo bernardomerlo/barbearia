@@ -110,8 +110,16 @@ $tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" 
         </div>
 
         <div class="center">
-            <button onclick="window.location.href='cancelar_agendamento.php?id=<?= htmlspecialchars($corte_agendado->id) ?>'">Cancelar Agendamento</button>
+            <button onclick="confirmarCancelamento('<?= htmlspecialchars($corte_agendado->id) ?>')">Cancelar Agendamento</button>
         </div>
+
+        <script>
+            function confirmarCancelamento(id) {
+                if (confirm("Tem certeza que deseja cancelar este agendamento?")) {
+                    window.location.href = 'cancelar_agendamento.php?id=' + id;
+                }
+            }
+        </script>
     </div>
 
 </body>

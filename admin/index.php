@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user"])) {
-    header("Location: autentica.php");
+    header("Location: auth/autentica.php");
     exit();
 }
 
@@ -230,7 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_corte"])) {
 
 <body>
     <div class="logout-btn">
-        <a href="logout.php">Sair</a>
+        <a href="auth/logout.php">Sair</a>
     </div>
 
     <h1>Cortes de <?php echo htmlspecialchars($barbeiro->nome); ?></h1>

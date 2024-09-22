@@ -9,7 +9,7 @@ if (!isset($_COOKIE['visited'])) {
 }
 
 if (!isset($_GET["id"])) {
-    header("Location: selecionar_barbearia.php");
+    header("Location: agendamento/selecionar_barbearia.php");
     exit();
 }
 
@@ -143,7 +143,7 @@ if ($agendado) {
 
 <body>
 
-    <form method="POST" action="agendar_corte.php" id="agendamentoForm">
+    <form method="POST" action="agendamento/agendar_corte.php" id="agendamentoForm">
         <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
 
         <div class="barbeiro-imagem">

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-require_once "config/Database.php";
+require_once "../config/Database.php";
 $db = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

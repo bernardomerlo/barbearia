@@ -1,5 +1,5 @@
 <?php
-require_once "config/Database.php";
+require_once "../config/Database.php";
 $db = new Database();
 
 if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {

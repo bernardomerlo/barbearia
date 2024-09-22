@@ -261,7 +261,7 @@ foreach ($barbeiros as $barbeiro) {
                     <tr>
                         <td><?= htmlspecialchars($barbeiro->nome, ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= $barbeiro->total_cortes ?></td>
-                        <td><button class="delete-btn"><a href="visualizar_barbeiro.php?id=<?= $barbeiro->id ?>"><i class="fa-solid fa-eye"></i></a></button></td>
+                        <td><button class="delete-btn"><a href="barbeiro/visualizar_barbeiro.php?id=<?= $barbeiro->id ?>"><i class="fa-solid fa-eye"></i></a></button></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -272,7 +272,7 @@ foreach ($barbeiros as $barbeiro) {
 
 
     <div>
-        <a href="formulario_barbeiro.php" class="inserir">Inserir Barbeiro</a>
+        <a href="forms/formulario_barbeiro.php" class="inserir">Inserir Barbeiro</a>
     </div>
 
 

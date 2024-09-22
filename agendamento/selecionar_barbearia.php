@@ -1,5 +1,5 @@
 <?php
-require_once "config/Database.php";
+require_once "../config/Database.php";
 $db = new Database();
 
 $agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
@@ -100,7 +100,7 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
                     $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
                     ?>
                     <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>
-                    <form action="index.php" method="get">
+                    <form action="../index.php" method="get">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->id); ?>">
                         <button type="submit">Acessar</button>
                     </form>

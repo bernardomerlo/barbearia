@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../config/Database.php";
+require_once "../../config/Database.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = trim($_POST['name']);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ];
                 $db->insert($sql, $params);
 
-                header("Location: gerenciar_barbearia.php");
+                header("Location: ../gerenciar_barbearia.php");
                 exit();
             } catch (Exception $e) {
                 $error = "Erro ao inserir barbeiro: " . $e->getMessage();

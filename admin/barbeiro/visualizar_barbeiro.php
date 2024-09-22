@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once "../config/Database.php";
+require_once "../../config/Database.php";
 
 if (!isset($_SESSION["user"])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -125,7 +125,7 @@ try {
 
 <body>
     <div class="logout-btn">
-        <a href="gerenciar_barbearia.php">Voltar</a>
+        <a href="../gerenciar_barbearia.php">Voltar</a>
     </div>
     <div class="barbeiro-container">
         <h1><?php echo htmlspecialchars($barbeiro->nome); ?></h1>
@@ -133,7 +133,7 @@ try {
         <p>Total de Cortes: <?php echo $total_cortes; ?></p>
 
         <div class="button-group">
-            <a href="formulario_editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>">Editar</a>
+            <a href="../forms/formulario_editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>">Editar</a>
 
             <a href="remover_barbeiro.php?id=<?php echo $id_barbeiro; ?>" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este barbeiro? Todos os agendamentos dele serão removidos!')">Remover</a>
         </div>

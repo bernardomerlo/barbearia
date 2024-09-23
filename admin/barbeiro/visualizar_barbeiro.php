@@ -129,7 +129,7 @@ try {
     </div>
     <div class="barbeiro-container">
         <h1><?php echo htmlspecialchars($barbeiro->nome); ?></h1>
-        <img src="../<?php echo htmlspecialchars($barbeiro->foto); ?>" alt="Foto do Barbeiro">
+        <img src="../../<?php echo htmlspecialchars($barbeiro->foto); ?>" alt="Foto do Barbeiro">
         <p>Total de Cortes: <?php echo $total_cortes; ?></p>
 
         <div class="button-group">

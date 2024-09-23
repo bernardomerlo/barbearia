@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $foto_nome = $_FILES['photo']['name'];
             $foto_tmp = $_FILES['photo']['tmp_name'];
             $foto_destino_relativo = "imgs/" . basename($foto_nome);
-            $foto_destino_absoluto = "../" . $foto_destino_relativo;
+            $foto_destino_absoluto = "../../" . $foto_destino_relativo;
 
             if (move_uploaded_file($foto_tmp, $foto_destino_absoluto)) {
                 $foto = $foto_destino_relativo;

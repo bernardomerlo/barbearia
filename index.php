@@ -228,7 +228,7 @@ if ($agendado) {
                 const dataAgendamento = dataInput.value;
 
                 if (idBarbeiro && dataAgendamento) {
-                    fetch(`buscar_horarios.php?id_barbeiro=${idBarbeiro}&data=${dataAgendamento}`)
+                    fetch(`agendamento/buscar_horarios.php?id_barbeiro=${idBarbeiro}&data=${dataAgendamento}`)
                         .then(response => response.json())
                         .then(horarios => {
                             horariosSelect.innerHTML = "<option value=''>Selecione um horário</option>";

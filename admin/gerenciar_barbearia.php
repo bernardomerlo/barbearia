@@ -12,7 +12,7 @@ include_once '../config/Database.php';
 $db = new Database();
 
 $barbearia = $db->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
-$barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia", ['id_barbearia' => $id_barbearia]);
+$barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);
 
 foreach ($barbeiros as $barbeiro) {
     $cortes = $db->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);

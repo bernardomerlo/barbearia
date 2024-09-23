@@ -1,7 +1,3 @@
-SET NAMES utf8mb4;
-
-SET FOREIGN_KEY_CHECKS = 0;
-
 DROP TABLE IF EXISTS `barbearias`;
 
 CREATE TABLE `barbearias` (
@@ -10,7 +6,7 @@ CREATE TABLE `barbearias` (
     `telefone` varchar(17) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
     `id_endereco` int NOT NULL,
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+)
 
 INSERT INTO
     `barbearias`
@@ -53,9 +49,6 @@ CREATE TABLE `barbeiros` (
     CONSTRAINT `fk_barbearia` FOREIGN KEY (`id_barbearia`) REFERENCES `barbearias` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of barbeiros
--- ----------------------------
 INSERT INTO
     `barbeiros`
 VALUES (
@@ -67,11 +60,7 @@ VALUES (
         1
     );
 
--- ----------------------------
--- Table structure for cortes
--- ----------------------------
 DROP TABLE IF EXISTS `cortes`;
-
 CREATE TABLE `cortes` (
     `id` int NOT NULL AUTO_INCREMENT,
     `data_corte` date NOT NULL,
@@ -89,7 +78,6 @@ CREATE TABLE `cortes` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `enderecos`;
-
 CREATE TABLE `enderecos` (
     `id` int NOT NULL AUTO_INCREMENT,
     `estado` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -101,9 +89,6 @@ CREATE TABLE `enderecos` (
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of enderecos
--- ----------------------------
 INSERT INTO
     `enderecos`
 VALUES (
@@ -141,16 +126,12 @@ VALUES (
     );
 
 DROP TABLE IF EXISTS `horarios`;
-
 CREATE TABLE `horarios` (
     `id` int NOT NULL AUTO_INCREMENT,
     `horario` time NOT NULL,
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of horarios
--- ----------------------------
 INSERT INTO `horarios` VALUES (1, '09:00:00');
 
 INSERT INTO `horarios` VALUES (2, '09:30:00');
@@ -193,9 +174,6 @@ INSERT INTO `horarios` VALUES (20, '18:30:00');
 
 INSERT INTO `horarios` VALUES (21, '19:00:00');
 
--- ----------------------------
--- Table structure for tipos_cortes
--- ----------------------------
 DROP TABLE IF EXISTS `tipos_cortes`;
 
 CREATE TABLE `tipos_cortes` (
@@ -204,9 +182,6 @@ CREATE TABLE `tipos_cortes` (
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of tipos_cortes
--- ----------------------------
 INSERT INTO `tipos_cortes` VALUES (1, 'Pézinho');
 
 INSERT INTO `tipos_cortes` VALUES (2, 'Sobrancelha');
@@ -219,13 +194,6 @@ INSERT INTO `tipos_cortes` VALUES (5, 'Barba');
 
 INSERT INTO `tipos_cortes` VALUES (6, 'Bigode');
 
-INSERT INTO
-    `tipos_cortes`
-VALUES (
-        8,
-        'Completo (Barba, Cabelo e Bigode)'
-    );
+INSERT INTO `tipos_cortes` VALUES (8, 'Completo (Barba, Cabelo e Bigode)');
 
 INSERT INTO `tipos_cortes` VALUES (7, 'Pintar');
-
-SET FOREIGN_KEY_CHECKS = 1;

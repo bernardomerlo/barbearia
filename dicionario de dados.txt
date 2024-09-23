@@ -1,0 +1,7 @@
+DICIONARIO DE DADOS
+barbearias = id, nome, telefone, id_endereco
+barbeiros = id, nome, senha, id_barbearia, foto, admin
+cortes = id, data corte, nome cliente, telefone cliente, id_barbeiro, cliente, tipo corte, horario
+endereços = id, estado, cidade, bairro, rua, numero, complemento
+horarios = id, horario
+tipos cortes = id, nome

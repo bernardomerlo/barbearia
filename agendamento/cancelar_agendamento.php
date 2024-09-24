@@ -1,7 +1,6 @@
 <?php
 
-include_once "../config/Database.php";
-$db = new Database();
+include_once '../start/init.php';
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];

@@ -1,6 +1,6 @@
 <?php
-require_once "../config/Database.php";
-$db = new Database();
+
+include_once '../start/init.php';
 
 $agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
 

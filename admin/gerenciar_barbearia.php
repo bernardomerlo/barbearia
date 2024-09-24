@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include_once '../start/init.php';
 
 if (!$_SESSION["user"]->id_barbearia) {
     header('Location: index.php');
@@ -7,9 +8,6 @@ if (!$_SESSION["user"]->id_barbearia) {
 }
 
 $id_barbearia = $_SESSION["user"]->id_barbearia;
-
-include_once '../config/Database.php';
-$db = new Database();
 
 $barbearia = $db->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
 $barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);

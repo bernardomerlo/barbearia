@@ -1,8 +1,8 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
 
-require_once "config/Database.php";
-$db = new Database();
+include_once 'start/init.php';
+
+header('Content-Type: text/html; charset=utf-8');
 
 if (!isset($_COOKIE['visited'])) {
     include_once "splash_screen.php";

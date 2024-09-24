@@ -1,6 +1,7 @@
 <?php
-require_once "config/Database.php";
-$db = new Database();
+
+include_once 'start/init.php';
+
 
 function countRows($db, $tableName)
 {

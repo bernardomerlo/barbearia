@@ -1,6 +1,6 @@
 <?php
-require_once "../config/Database.php";
-$db = new Database();
+
+include_once '../start/init.php';
 
 if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {
     $id_barbeiro = $_GET["id_barbeiro"];

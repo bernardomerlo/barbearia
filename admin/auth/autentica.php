@@ -1,7 +1,6 @@
 <?php
-session_start();
 
-require_once "../../config/Database.php";
+include_once '../../start/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
@@ -9,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($username) && !empty($password)) {
         try {
-            $db = new Database();
             $user = $db->selectOne("SELECT * FROM barbeiros WHERE nome = :username", ["username" => $username]);
 
             if ($user && password_verify($password, $user->senha)) {

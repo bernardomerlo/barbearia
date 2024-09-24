@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once "../../config/Database.php";
+
+include_once '../../start/init.php';
 
 if (!isset($_SESSION["user"])) {
     header("Location: index.php");
@@ -13,8 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
     $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
     try {
-        $db = new Database();
-
         $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
         if (!$barbeiro) {

@@ -1,7 +1,6 @@
 <?php
 
-session_start();
-require_once "../../config/Database.php";
+include_once '../../start/init.php';
 
 if (!isset($_SESSION["user"])) {
     header("Location: ../index.php");
@@ -15,7 +14,6 @@ if (!isset($_GET['id'])) {
 $id_barbeiro = intval($_GET['id']);
 
 try {
-    $db = new Database();
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {

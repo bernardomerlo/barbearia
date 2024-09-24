@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-require_once "../config/Database.php";
-$db = new Database();
+include_once '../start/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_barbeiro = $_POST["id_barbeiro"];

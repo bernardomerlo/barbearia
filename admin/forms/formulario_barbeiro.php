@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include_once '../../start/init.php';
 
 if (!isset($_SESSION["user"])) {
     header("Location: ../index.php");

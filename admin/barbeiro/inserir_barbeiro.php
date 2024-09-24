@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once "../../config/Database.php";
+
+include_once '../../start/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = trim($_POST['name']);
@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (!isset($error)) {
             try {
-                $db = new Database();
                 $sql = "INSERT INTO barbeiros (nome, senha, foto, admin, id_barbearia) VALUES (:nome, :senha, :foto, :admin, :id_barbearia)";
                 $params = [
                     "nome" => $nome,

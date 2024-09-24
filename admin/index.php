@@ -1,14 +1,11 @@
 <?php
-session_start();
+
+include_once '../start/init.php';
 
 if (!isset($_SESSION["user"])) {
     header("Location: auth/autentica.php");
     exit();
 }
-
-require_once "../config/Database.php";
-
-$db = new Database();
 
 $barbeiro = $_SESSION["user"];
 

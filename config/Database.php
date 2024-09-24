@@ -3,9 +3,10 @@
 class Database
 {
     private PDO $conn;
+    private static ?Database $instance = null;
 
     // metodo construtor faz a conexao com o banco de dados passado por parametro
-    public function __construct()
+    private function __construct()
     {
         try {
             $this->conn = new PDO("mysql:host=localhost;dbname=barbearia", "bamsoares", "root", [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
@@ -13,6 +14,19 @@ class Database
         } catch (\PDOException $e) {
             throw new \Exception("Query failed: " . $e->getMessage());
         }
+    }
+
+    public static function getInstance(): Database
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection(): PDO
+    {
+        return $this->conn;
     }
 
     // faz a query juntamente com os parametros passados 

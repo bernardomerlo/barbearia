@@ -10,15 +10,22 @@ if ($agendado) {
 }
 $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selecione uma Barbearia</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #1e1e1e;
             color: #fff;
             margin: 0;
@@ -36,7 +43,8 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
             border-radius: 8px;
             margin: 15px;
             padding: 20px;
-            width: 250px;
+            width: 100%;
+            max-width: 250px;
             text-align: center;
         }
 
@@ -84,37 +92,40 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
             transform: scale(1.05);
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 
 <body>
-    <h1 style="text-align: center;">Selecione uma Barbearia</h1>
-    <div class="barbearias-container">
-        <?php if ($barbearias): ?>
-            <?php foreach ($barbearias as $barbearia): ?>
-                <div class="barbearia-card">
-                    <h2><?php echo htmlspecialchars($barbearia->nome); ?></h2>
-                    <?php
-                    $result = $db->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
-                    $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
-                    ?>
-                    <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>
-                    <form action="../index.php" method="get">
-                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->id); ?>">
-                        <button type="submit">Acessar</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Nenhuma barbearia disponível no momento.</p>
-        <?php endif; ?>
+    <div class="container">
+        <h1 class="text-center">Selecione uma Barbearia</h1>
+        <div class="barbearias-container row justify-content-center">
+            <?php if ($barbearias): ?>
+                <?php foreach ($barbearias as $barbearia): ?>
+                    <div class="barbearia-card col-md-4">
+                        <h2><?php echo htmlspecialchars($barbearia->nome); ?></h2>
+                        <?php
+                        $result = $db->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
+                        $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
+                        ?>
+                        <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>
+                        <form action="../index.php" method="get">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->id); ?>">
+                            <button type="submit" class="btn btn-primary">Acessar</button>
+                        </form>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center">Nenhuma barbearia disponível no momento.</p>
+            <?php endif; ?>
+        </div>
+
+        <div class="barbeiro-container">
+            <h3>É Barbeiro?</h3>
+            <a href="../admin/index.php" class="barbeiro-button">Clique Aqui!</a>
+        </div>
     </div>
 
-    <div class="barbeiro-container">
-        <h3>É Barbeiro?</h3>
-        <a href="../admin/index.php" class="barbeiro-button">Clique Aqui!</a>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

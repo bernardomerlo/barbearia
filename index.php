@@ -29,17 +29,19 @@ if ($agendado) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Agendamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #1e1e1e;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         form {
@@ -72,7 +74,7 @@ if ($agendado) {
         select,
         input[type="text"],
         input[type="date"] {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: none;
@@ -142,52 +144,71 @@ if ($agendado) {
 </head>
 
 <body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <form method="POST" action="agendamento/agendar_corte.php" id="agendamentoForm">
+                    <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
 
-    <form method="POST" action="agendamento/agendar_corte.php" id="agendamentoForm">
-        <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
+                    <div class="barbeiro-imagem">
+                        <img id="barbeiroFoto" src="imgs/default_image_barbeiro.png" alt="Foto do barbeiro">
+                    </div>
 
-        <div class="barbeiro-imagem">
-            <img id="barbeiroFoto" src="imgs/default_image_barbeiro.png" alt="Foto do barbeiro">
+                    <div class="mb-3">
+                        <label for="id_barbeiro">Barbeiros Disponíveis:</label>
+                        <select class="form-select" name="id_barbeiro" id="id_barbeiro" required>
+                            <option value="">Selecione um barbeiro</option>
+                            <?php
+                            $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
+                            foreach ($barbeiros as $barbeiro) {
+                                echo "<option value='" . htmlspecialchars($barbeiro->id) . "' data-foto='" . htmlspecialchars($barbeiro->foto) . "'>" . htmlspecialchars($barbeiro->nome) . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="data">Data:</label>
+                        <input class="form-control" type="date" name="data" id="data" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="horarios">Horários Disponíveis</label>
+                        <select class="form-select" name="horarios" id="horarios" required>
+                            <option value="">Selecione um horário</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tipo_corte">Corte</label>
+                        <select class="form-select" name="tipo_corte" id="tipo_corte" required>
+                            <?php
+                            $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
+                            foreach ($tipos_corte as $tipo_corte) {
+                                echo "<option value='" . htmlspecialchars($tipo_corte->id) . "'>" . htmlspecialchars($tipo_corte->nome) . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nome_cliente">Seu nome:</label>
+                        <input class="form-control" type="text" name="nome_cliente" id="nome_cliente" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="telefone_cliente">Telefone:</label>
+                        <input class="form-control" type="text" name="telefone_cliente" id="telefone_cliente" required>
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit">Agendar</button>
+                    <div class="spinner" id="spinner"></div>
+                </form>
+            </div>
         </div>
+    </div>
 
-        <label for="id_barbeiro">Barbeiros Disponíveis:</label>
-        <select name="id_barbeiro" id="id_barbeiro" required>
-            <option value="">Selecione um barbeiro</option>
-            <?php
-            $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
-            foreach ($barbeiros as $barbeiro) {
-                echo "<option value='" . htmlspecialchars($barbeiro->id) . "' data-foto='" . htmlspecialchars($barbeiro->foto) . "'>" . htmlspecialchars($barbeiro->nome) . "</option>";
-            }
-            ?>
-        </select>
-
-        <label for="data">Data:</label>
-        <input type="date" name="data" id="data" required>
-
-        <label for="horarios">Horários Disponíveis</label>
-        <select name="horarios" id="horarios" required>
-            <option value="">Selecione um horário</option>
-        </select>
-
-        <label for="tipo_corte">Corte</label>
-        <select name="tipo_corte" id="tipo_corte" required>
-            <?php
-            $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
-            foreach ($tipos_corte as $tipo_corte) {
-                echo "<option value='" . htmlspecialchars($tipo_corte->id) . "'>" . htmlspecialchars($tipo_corte->nome) . "</option>";
-            }
-            ?>
-        </select>
-
-        <label for="nome_cliente">Seu nome:</label>
-        <input type="text" name="nome_cliente" id="nome_cliente" required>
-
-        <label for="telefone_cliente">Telefone:</label>
-        <input type="text" name="telefone_cliente" id="telefone_cliente" required>
-
-        <button type="submit">Agendar</button>
-        <div class="spinner" id="spinner"></div>
-    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

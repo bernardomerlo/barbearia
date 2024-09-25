@@ -2,7 +2,6 @@
 
 include_once 'start/init.php';
 
-
 function countRows($db, $tableName)
 {
     return $db->selectOne("SELECT COUNT(*) AS total FROM $tableName")->total;
@@ -26,28 +25,35 @@ if (!isset($_COOKIE['visited'])) {
 
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Splash Screen</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
         <style>
             body {
-                font-family: 'Arial', sans-serif;
+                font-family: 'Poppins', sans-serif;
                 background-color: #1e1e1e;
                 color: #fff;
                 margin: 0;
-                padding: 20px;
+                padding: 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
+                text-align: center;
             }
 
             .splash-container {
-                text-align: center;
+                width: 100%;
                 max-width: 800px;
                 padding: 40px;
                 background-color: #2e2e2e;
                 border-radius: 10px;
                 box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
             }
+
 
             h1,
             h2,
@@ -99,24 +105,28 @@ if (!isset($_COOKIE['visited'])) {
     </head>
 
     <body>
-        <div class="splash-container">
-            <h1>Sistema de Agendamento de Cortes</h1>
-            <h2>Total de registros Existentes</h2>
-            <ul>
-                <?php foreach ($tableData as $tableName => $rowCount): ?>
-                    <li><span><?php echo htmlspecialchars($tableName); ?>:</span> <?php echo htmlspecialchars($rowCount); ?> linhas</li>
-                <?php endforeach; ?>
-            </ul>
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="splash-container">
+                <h1>Sistema de Agendamento de Cortes</h1>
+                <h2>Total de registros Existentes</h2>
+                <ul>
+                    <?php foreach ($tableData as $tableName => $rowCount): ?>
+                        <li><span><?php echo htmlspecialchars($tableName); ?>:</span> <?php echo htmlspecialchars($rowCount); ?> linhas</li>
+                    <?php endforeach; ?>
+                </ul>
 
-            <div class="footer">
-                <p><strong>Criadores</strong>: Bernardo Antonio Merlo Soares, Kaio Barbosa Linhares,</p>
-                <p>Rikelme Mindelo Biague e Bruno Emanuel</p>
-                <p><strong>Disciplina</strong>: Banco de Dados 2024/2</p>
-                <p><strong>Professor</strong>: Howarda Roatti</p>
+                <div class="footer">
+                    <p><strong>Criadores</strong>: Bernardo Antonio Merlo Soares, Kaio Barbosa Linhares,</p>
+                    <p>Rikelme Mindelo Biague e Bruno Emanuel</p>
+                    <p><strong>Disciplina</strong>: Banco de Dados 2024/2</p>
+                    <p><strong>Professor</strong>: Howarda Roatti</p>
+                </div>
+
+                <p class="loading">Carregando o sistema...</p>
             </div>
-
-            <p class="loading">Carregando o sistema...</p>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
             setTimeout(function() {
@@ -127,7 +137,7 @@ if (!isset($_COOKIE['visited'])) {
 
     </html>
 
-
 <?php
     exit();
 }
+?>

@@ -30,16 +30,21 @@ try {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Barbeiro</title>
+
+    <!-- Adicionando Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #1e1e1e;
             color: #fff;
             margin: 0;
@@ -47,7 +52,7 @@ try {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             padding: 10px;
             box-sizing: border-box;
         }
@@ -81,7 +86,7 @@ try {
 
         .button-group {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             margin-top: 20px;
         }
 
@@ -118,26 +123,33 @@ try {
             background-color: #ff4d4d;
             padding: 10px 15px;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn a:hover {
+            background-color: #ff6666;
         }
     </style>
 </head>
 
 <body>
     <div class="logout-btn">
-        <a href="../gerenciar_barbearia.php">Voltar</a>
+        <a href="../gerenciar_barbearia.php" class="btn btn-danger">Voltar</a>
     </div>
+
     <div class="barbeiro-container">
         <h1><?php echo htmlspecialchars($barbeiro->nome); ?></h1>
-        <img src="../../<?php echo htmlspecialchars($barbeiro->foto); ?>" alt="Foto do Barbeiro">
+        <img src="../../<?php echo htmlspecialchars($barbeiro->foto); ?>" alt="Foto do Barbeiro" class="img-fluid rounded-circle">
         <p>Total de Cortes: <?php echo $total_cortes; ?></p>
 
         <div class="button-group">
-            <a href="../forms/formulario_editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>">Editar</a>
-
-            <a href="remover_barbeiro.php?id=<?php echo $id_barbeiro; ?>" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este barbeiro? Todos os agendamentos dele serão removidos!')">Remover</a>
+            <a href="../forms/formulario_editar_barbeiro.php?id=<?php echo $id_barbeiro; ?>" class="btn btn-warning">Editar</a>
+            <a href="remover_barbeiro.php?id=<?php echo $id_barbeiro; ?>" class="btn btn-danger delete-btn" onclick="return confirm('Tem certeza que deseja remover este barbeiro? Todos os agendamentos dele serão removidos!')">Remover</a>
         </div>
     </div>
 
+    <!-- Adicionando Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

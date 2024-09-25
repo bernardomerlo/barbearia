@@ -10,5 +10,5 @@ if (isset($_GET["id"])) {
     }
 
     $db->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id]);
-    header("Location: index.php");
+    header("Location: ../index.php");
 }

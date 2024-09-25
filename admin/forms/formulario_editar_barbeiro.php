@@ -14,7 +14,6 @@ if (!isset($_GET['id']) || intval($_GET['id']) <= 0) {
 $id_barbeiro = intval($_GET['id']);
 
 try {
-    $db = new Database();
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
@@ -26,16 +25,20 @@ try {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Barbeiro</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #1e1e1e;
             color: #fff;
             margin: 0;
@@ -54,7 +57,6 @@ try {
             border-radius: 8px;
             width: 100%;
             max-width: 600px;
-            box-sizing: border-box;
         }
 
         .register-form h1 {
@@ -64,30 +66,18 @@ try {
             color: #fff;
         }
 
-        .register-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .register-form input[type="text"],
-        .register-form input[type="file"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
+        .register-form .form-control {
             background-color: #3e3e3e;
             color: #fff;
-            font-size: 16px;
+            border: none;
+            border-radius: 5px;
         }
 
-        .register-form input[type="text"]:focus,
-        .register-form input[type="file"]:focus {
-            outline: none;
+        .register-form .form-control:focus {
+            background-color: #3e3e3e;
+            color: #fff;
             border: 1px solid #5e5e5e;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            box-shadow: none;
         }
 
         .register-form button {
@@ -107,21 +97,23 @@ try {
             background-color: #7e7e7e;
         }
 
-        .register-form .checkbox-group {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 20px;
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
-        .register-form .checkbox-group label {
+        .logout-btn a {
             color: #fff;
-            margin-left: 10px;
-            display: inline-block;
+            text-decoration: none;
+            background-color: #ff4d4d;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
-        .register-form .checkbox-group input[type="checkbox"] {
-            margin-right: 10px;
+        .logout-btn a:hover {
+            background-color: #ff6666;
         }
 
         @media (max-width: 600px) {
@@ -142,33 +134,13 @@ try {
                 padding: 12px;
                 font-size: 16px;
             }
-
-            .register-form input[type="text"],
-            .register-form input[type="file"] {
-                padding: 8px;
-                font-size: 14px;
-            }
-        }
-
-        .logout-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .logout-btn a {
-            color: #fff;
-            text-decoration: none;
-            background-color: #ff4d4d;
-            padding: 10px 15px;
-            border-radius: 5px;
         }
     </style>
 </head>
 
 <body>
     <div class="logout-btn">
-        <a href="gerenciar_barbearia.php">Voltar</a>
+        <a href="../gerenciar_barbearia.php" class="btn btn-danger">Voltar</a>
     </div>
 
     <form class="register-form" method="POST" enctype="multipart/form-data" action="../barbeiro/editar_barbeiro.php">
@@ -176,19 +148,25 @@ try {
 
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbeiro->id); ?>">
 
-        <label for="name">Nome:</label>
-        <input type="text" name="name" id="name" value="<?php echo htmlspecialchars($barbeiro->nome); ?>" required>
-
-        <label for="photo">Foto (deixe em branco para manter a atual):</label>
-        <input type="file" name="photo" id="photo" accept="image/*">
-
-        <div class="checkbox-group">
-            <label for="is_admin">É administrador?</label>
-            <input type="checkbox" name="is_admin" id="is_admin" <?php echo ($barbeiro->admin) ? 'checked' : ''; ?>>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome:</label>
+            <input type="text" class="form-control" name="name" id="name" value="<?php echo htmlspecialchars($barbeiro->nome); ?>" required>
         </div>
 
-        <button type="submit">Salvar Alterações</button>
+        <div class="mb-3">
+            <label for="photo" class="form-label">Foto (deixe em branco para manter a atual):</label>
+            <input type="file" class="form-control" name="photo" id="photo" accept="image/*">
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" name="is_admin" id="is_admin" <?php echo ($barbeiro->admin) ? 'checked' : ''; ?>>
+            <label class="form-check-label" for="is_admin">É administrador?</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

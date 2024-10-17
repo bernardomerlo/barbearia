@@ -53,9 +53,15 @@ Este projeto é um sistema de gerenciamento de barbearia que permite agendar cor
 - Ter um servidor web instalado (recomendo o Xampp)
 - Banco de dados MySQL
 
+## Instalação 
+
+  Basta entrar no link e seguir o passo a passo de acordo com o seu sistema operacional
+  
+  https://www.apachefriends.org/pt_br/download.html
+
 ### Instalação
 
-1. Clone o repositório para o seu servidor web:
+1. Clone o repositório para o seu servidor web (no Xampp dentro da pasta /htdocs):
 
    ```sh
    git clone https://github.com/bernardomerlo/barbearia.git
@@ -68,7 +74,7 @@ Este projeto é um sistema de gerenciamento de barbearia que permite agendar cor
 
 3. Configure a conexão com o banco de dados:
 
-   - Edite o arquivo [`config/Database.php`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2Fxampp%2Fhtdocs%2Fbarbearia%2Fconfig%2FDatabase.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\\xampp\htdocs\barbearia\config\Database.php") com as informações do seu banco de dados.
+   - Edite o arquivo [`config/Database.php`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2Fxampp%2Fhtdocs%2Fbarbearia%2Fconfig%2FDatabase.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\\xampp\htdocs\barbearia\config\Database.php") com as informações do seu banco de dados, como host, username e password
 
 4. Inicie o servidor web e acesse o projeto pelo navegador:
    ```sh

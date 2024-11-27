@@ -4,14 +4,48 @@ include_once '../start/init.php';
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
+    // MySQL
+    /*
     $corte_agendado = $db->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
+    */
+
+    // Oracle
+    $corte_agendado = $oracle->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
+
+    // MongoDB
+    /*
+    $corte_agendado = $mongo->selectOne("cortes", ["id" => (int)$id]);
+    */
 } else {
     $cliente = $_SERVER["REMOTE_ADDR"];
+    // MySQL
+    /*
     $corte_agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $cliente]);
-}
+    */
 
+    // Oracle
+    $corte_agendado = $oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $cliente]);
+
+    // MongoDB
+    /*
+    $corte_agendado = $mongo->selectOne("cortes", ["cliente" => $cliente]);
+    */
+}
+// MySQL
+/*
 $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
 $tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
+*/
+
+// Oracle
+$barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
+$tipo_corte = $oracle->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
+
+// MongoDB
+/*
+$barbeiro = $mongo->selectOne("barbeiros", ["id" => $corte_agendado->id_barbeiro]);
+$tipo_corte = $mongo->selectOne("tipos_cortes", ["id" => $corte_agendado->tipo_corte]);
+*/
 ?>
 
 <!DOCTYPE html>

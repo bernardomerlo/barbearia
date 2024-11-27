@@ -13,8 +13,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
     $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
     try {
+        // MySQL
+        /*
         $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+        */
 
+        // Oracle
+        $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+
+        // MongoDB
+        /*
+        $barbeiro = $mongo->selectOne("barbeiros", ["id" => $id_barbeiro]);
+        */
         if (!$barbeiro) {
             header("Location: gerenciar_barbearia.php");
             exit();
@@ -36,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
             }
         }
 
+        // MySQL
+        /*
         $sql = "UPDATE barbeiros SET nome = :nome, foto = :foto, admin = :admin WHERE id = :id";
         $params = [
             "nome" => $nome,
@@ -43,9 +55,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
             "admin" => $is_admin,
             "id" => $id_barbeiro
         ];
-
-
         $db->update($sql, $params);
+        */
+
+        // Oracle
+        $sql = "UPDATE barbeiros SET nome = :nome, foto = :foto, admin = :admin WHERE id = :id";
+        $params = [
+            "nome" => $nome,
+            "foto" => $foto,
+            "admin" => $is_admin,
+            "id" => $id_barbeiro
+        ];
+        $oracle->update($sql, $params);
+
+        // MongoDB
+        /*
+        $mongo->update("barbeiros", ["id" => $id_barbeiro], [
+            "nome" => $nome,
+            "foto" => $foto,
+            "admin" => $is_admin
+        ]);
+        */
+
 
         $_SESSION['success'] = "Barbeiro atualizado com sucesso!";
         header("Location: ../gerenciar_barbearia.php");

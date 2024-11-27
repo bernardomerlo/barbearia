@@ -14,12 +14,33 @@ if (!isset($_GET['id']) || intval($_GET['id']) <= 0) {
 $id_barbeiro = intval($_GET['id']);
 
 try {
+    // MySQL
+    /*
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
         header("Location: ../gerenciar_barbearia.php");
         exit();
     }
+    */
+
+    // Oracle
+    $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+
+    if (!$barbeiro) {
+        header("Location: ../gerenciar_barbearia.php");
+        exit();
+    }
+
+    // MongoDB
+    /*
+    $barbeiro = $mongo->selectOne("barbeiros", ["id" => $id_barbeiro]);
+
+    if (!$barbeiro) {
+        header("Location: ../gerenciar_barbearia.php");
+        exit();
+    }
+    */
 } catch (Exception $e) {
     exit();
 }

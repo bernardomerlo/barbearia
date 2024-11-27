@@ -15,6 +15,8 @@ if (!isset($_GET['id'])) {
 $id_barbeiro = intval($_GET['id']);
 
 try {
+    // MySQL
+    /*
     $barbeiro = $db->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
@@ -24,6 +26,30 @@ try {
 
     $cortes = $db->selectOne("SELECT COUNT(*) AS total_cortes FROM cortes WHERE id_barbeiro = :id", ["id" => $id_barbeiro]);
     $total_cortes = $cortes->total_cortes ?? 0;
+    */
+
+    // Oracle
+    $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+
+    if (!$barbeiro) {
+        echo "Barbeiro não encontrado!";
+        exit();
+    }
+
+    $cortes = $oracle->selectOne("SELECT COUNT(*) AS total_cortes FROM cortes WHERE id_barbeiro = :id", ["id" => $id_barbeiro]);
+    $total_cortes = $cortes->total_cortes ?? 0;
+
+    // MongoDB
+    /*
+    $barbeiro = $mongo->selectOne("barbeiros", ["id" => $id_barbeiro]);
+
+    if (!$barbeiro) {
+        echo "Barbeiro não encontrado!";
+        exit();
+    }
+
+    $total_cortes = $mongo->count("cortes", ["id_barbeiro" => $id_barbeiro]);
+    */
 } catch (Exception $e) {
     echo "Erro ao buscar barbeiro: " . $e->getMessage();
     exit();

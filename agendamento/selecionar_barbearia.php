@@ -2,14 +2,34 @@
 
 include_once '../start/init.php';
 
+// MySQL
+/*
 $agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+*/
 
+// Oracle
+$agendado = $oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+
+// MongoDB
+/*
+$agendado = $mongo->selectOne("cortes", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+*/
 if ($agendado) {
     include "visualiza_agendado.php";
     exit();
 }
+// MySQL
+/*
 $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
-?>
+*/
+
+// Oracle
+$barbearias = $oracle->select("SELECT id, nome, id_endereco FROM barbearias");
+
+// MongoDB
+/*
+$barbearias = $mongo->select("barbearias", [], ["projection" => ["id" => 1, "nome" => 1, "id_endereco" => 1]]);
+*/ ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -105,7 +125,18 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
                     <div class="barbearia-card col-md-4">
                         <h2><?php echo htmlspecialchars($barbearia->nome); ?></h2>
                         <?php
+                        // MySQL e Oracle
+                        /*
                         $result = $db->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
+                        */
+
+                        $result = $oracle->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
+
+                        // MongoDB
+                        /*
+                        $result = $mongo->selectOne("enderecos", ["id" => $barbearia->id_endereco]);
+                        */
+
                         $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
                         ?>
                         <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>

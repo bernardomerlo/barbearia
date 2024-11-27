@@ -8,7 +8,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($username) && !empty($password)) {
         try {
+            // MySQL
+            /*
             $user = $db->selectOne("SELECT * FROM barbeiros WHERE nome = :username", ["username" => $username]);
+            */
+
+            // Oracle
+            $user = $oracle->selectOne("SELECT * FROM barbeiros WHERE nome = :username", ["username" => $username]);
+
+            // MongoDB
+            /*
+            $user = $mongo->selectOne("barbeiros", ["nome" => $username]);
+            */
 
             if ($user && password_verify($password, $user->senha)) {
                 $_SESSION["user"] = $user;

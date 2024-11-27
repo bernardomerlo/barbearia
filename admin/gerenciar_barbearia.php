@@ -9,6 +9,8 @@ if (!$_SESSION["user"]->id_barbearia) {
 
 $id_barbearia = $_SESSION["user"]->id_barbearia;
 
+// MySQL
+/*
 $barbearia = $db->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
 $barbeiros = $db->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);
 
@@ -16,6 +18,26 @@ foreach ($barbeiros as $barbeiro) {
     $cortes = $db->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
     $barbeiro->total_cortes = $cortes->total_cortes;
 }
+*/
+
+// Oracle
+$barbearia = $oracle->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
+$barbeiros = $oracle->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);
+
+foreach ($barbeiros as $barbeiro) {
+    $cortes = $oracle->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
+    $barbeiro->total_cortes = $cortes->total_cortes;
+}
+
+// MongoDB
+/*
+$barbearia = $mongo->selectOne("barbearias", ['id' => $id_barbearia]);
+$barbeiros = $mongo->select("barbeiros", ['id_barbearia' => $id_barbearia, 'id' => ['$ne' => $_SESSION["user"]->id]]);
+
+foreach ($barbeiros as &$barbeiro) {
+    $barbeiro['total_cortes'] = $mongo->count("cortes", ['id_barbeiro' => $barbeiro['id']]);
+}
+*/
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

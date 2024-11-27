@@ -13,11 +13,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo_corte = $_POST["tipo_corte"];
 
     try {
-        $db->beginTransaction();
+        // MySQL
+        /*
+    $db->beginTransaction();
 
-        $id = $db->insert(
+    $id = $db->insert(
+        "INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente, horario, tipo_corte) 
+        VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
+        [
+            "nome_cliente" => $nome_cliente,
+            "telefone_cliente" => $telefone_cliente,
+            "data" => $data,
+            "id_barbeiro" => $id_barbeiro,
+            "cliente" => $cliente_ip,
+            "horario" => $horario,
+            "tipo_corte" => $tipo_corte
+        ]
+    );
+    $db->endTransaction();
+    */
+
+        // Oracle
+        $oracle->beginTransaction();
+
+        $id = $oracle->insert(
             "INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente, horario, tipo_corte) 
-            VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
+        VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
             [
                 "nome_cliente" => $nome_cliente,
                 "telefone_cliente" => $telefone_cliente,
@@ -28,11 +49,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "tipo_corte" => $tipo_corte
             ]
         );
-        $db->endTransaction();
+        $oracle->endTransaction();
+
+        // MongoDB
+        /*
+    $mongo->insert("cortes", [
+        "nome_cliente" => $nome_cliente,
+        "telefone_cliente" => $telefone_cliente,
+        "data_corte" => $data,
+        "id_barbeiro" => $id_barbeiro,
+        "cliente" => $cliente_ip,
+        "horario" => $horario,
+        "tipo_corte" => $tipo_corte
+    ]);
+    */
         header("Location: visualiza_agendado.php?id=" . $id);
         exit();
     } catch (Exception $e) {
+        // MySQL
+        /*
         $db->rollBack();
+        */
+
+        // Oracle
+        $oracle->rollBack();
         echo "Erro ao agendar corte: " . $e->getMessage();
     }
 }

@@ -9,12 +9,36 @@ if (!isset($_SESSION["user"])) {
 
 $barbeiro = $_SESSION["user"];
 
+// MySQL
+/*
 $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
+*/
+
+// Oracle
+$cortes = $oracle->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
+
+// MongoDB
+/*
+$cortes = $mongo->select("cortes", ["id_barbeiro" => $barbeiro->id]);
+*/
 
 // Função para remover o corte
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_corte"])) {
     $id_corte = $_POST["id_corte"];
+
+    // MySQL
+    /*
     $db->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id_corte]);
+    */
+
+    // Oracle
+    $oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id_corte]);
+
+    // MongoDB
+    /*
+    $mongo->delete("cortes", ["id" => $id_corte]);
+    */
+
     header("Location: index.php");
     exit();
 }

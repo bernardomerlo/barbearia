@@ -9,6 +9,17 @@ if (isset($_GET["id"])) {
         die("ID inválido.");
     }
 
+    // MySQL
+    /*
     $db->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id]);
+    */
+
+    // Oracle
+    $oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id]);
+
+    // MongoDB
+    /*
+    $mongo->delete("cortes", ["id" => (int)$id]);
+    */
     header("Location: ../index.php");
 }

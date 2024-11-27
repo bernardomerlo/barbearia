@@ -13,10 +13,13 @@ if (!isset($_GET["id"])) {
     exit();
 }
 
-$agendado = $db->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+// $agendado = $db->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+// $agendado = $collection->findOne(["cliente" => $_SERVER["REMOTE_ADDR"]]);
+$agendado = $oracle->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
 
 if ($agendado) {
-    include "visualiza_agendado.php?id=" . $agendado->id;
+    $id = $agendado->id;
+    include "visualiza_agendado.php?id=" . $id;
     exit();
 }
 
@@ -149,8 +152,18 @@ if ($agendado) {
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <form method="POST" action="agendamento/agendar_corte.php" id="agendamentoForm">
-                    <h1>Agendar Corte na Barbearia <?= htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome) ?></h1>
+                    <?php
+                    /*
+                        echo htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome); 
+                        */
 
+                    echo htmlspecialchars($oracle->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome);
+
+                    /*
+                        echo htmlspecialchars($mongo->selectOne("barbearias", ["id" => $_GET["id"]])['nome']);
+                        */
+                    ?>
+                    </h1>
                     <div class="barbeiro-imagem">
                         <img id="barbeiroFoto" src="imgs/default_image_barbeiro.png" alt="Foto do barbeiro">
                     </div>
@@ -160,7 +173,16 @@ if ($agendado) {
                         <select class="form-select" name="id_barbeiro" id="id_barbeiro" required>
                             <option value="">Selecione um barbeiro</option>
                             <?php
-                            $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
+                            /*
+                                $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
+                                */
+
+                            $barbeiros = $oracle->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
+
+                            /*
+                            $barbeiros = $mongo->select("barbeiros", ["id_barbearia" => $_GET["id"]]);
+                            */
+
                             foreach ($barbeiros as $barbeiro) {
                                 echo "<option value='" . htmlspecialchars($barbeiro->id) . "' data-foto='" . htmlspecialchars($barbeiro->foto) . "'>" . htmlspecialchars($barbeiro->nome) . "</option>";
                             }
@@ -184,7 +206,16 @@ if ($agendado) {
                         <label for="tipo_corte">Corte</label>
                         <select class="form-select" name="tipo_corte" id="tipo_corte" required>
                             <?php
-                            $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
+                            /*
+                                $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
+                            */
+                            //Oracle
+                            $tipos_corte = $oracle->select("SELECT id, nome FROM tipos_cortes");
+
+                            /*
+                            $tipos_corte = $mongo->select("tipos_cortes");
+                            */
+
                             foreach ($tipos_corte as $tipo_corte) {
                                 echo "<option value='" . htmlspecialchars($tipo_corte->id) . "'>" . htmlspecialchars($tipo_corte->nome) . "</option>";
                             }

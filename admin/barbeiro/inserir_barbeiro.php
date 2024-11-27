@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (!isset($error)) {
             try {
+                // MySQL
+                /*
                 $sql = "INSERT INTO barbeiros (nome, senha, foto, admin, id_barbearia) VALUES (:nome, :senha, :foto, :admin, :id_barbearia)";
                 $params = [
                     "nome" => $nome,
@@ -41,6 +43,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     "id_barbearia" => $_SESSION["user"]->id_barbearia
                 ];
                 $db->insert($sql, $params);
+                */
+
+                // Oracle
+                $sql = "INSERT INTO barbeiros (nome, senha, foto, admin, id_barbearia) VALUES (:nome, :senha, :foto, :admin, :id_barbearia)";
+                $params = [
+                    "nome" => $nome,
+                    "senha" => $hashed_password,
+                    "foto" => $foto,
+                    "admin" => $is_admin,
+                    "id_barbearia" => $_SESSION["user"]->id_barbearia
+                ];
+                $oracle->insert($sql, $params);
+
+                // MongoDB
+                /*
+                $mongo->insert("barbeiros", [
+                    "nome" => $nome,
+                    "senha" => $hashed_password,
+                    "foto" => $foto,
+                    "admin" => $is_admin,
+                    "id_barbearia" => $_SESSION["user"]->id_barbearia
+                ]);
+                */
 
                 header("Location: ../gerenciar_barbearia.php");
                 exit();

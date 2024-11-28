@@ -27,14 +27,14 @@ try {
     */
 
     // Oracle
-    $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+    $barbeiro = //$oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
         header("Location: ../gerenciar_barbearia.php");
         exit();
     }
 
-    $oracle->delete("DELETE FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+    //$oracle->delete("DELETE FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     // MongoDB
     /*

@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             */
 
             // Oracle
-            $user = $oracle->selectOne("SELECT * FROM barbeiros WHERE nome = :username", ["username" => $username]);
+            $user = //$oracle->selectOne("SELECT * FROM barbeiros WHERE nome = :username", ["username" => $username]);
 
             // MongoDB
             /*

@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     */
 
     // Oracle
-    $corte_agendado = $oracle->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
+    $corte_agendado = //$oracle->selectOne("SELECT * FROM cortes WHERE id = :id", ["id" => $id]);
 
     // MongoDB
     /*
@@ -24,7 +24,7 @@ if (isset($_GET["id"])) {
     */
 
     // Oracle
-    $corte_agendado = $oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $cliente]);
+    $corte_agendado = //$oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $cliente]);
 
     // MongoDB
     /*
@@ -38,8 +38,8 @@ $tipo_corte = $db->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" 
 */
 
 // Oracle
-$barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
-$tipo_corte = $oracle->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
+$barbeiro = //$oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $corte_agendado->id_barbeiro]);
+$tipo_corte = //$oracle->selectOne("SELECT * FROM tipos_cortes WHERE id = :id", ["id" => $corte_agendado->tipo_corte]);
 
 // MongoDB
 /*

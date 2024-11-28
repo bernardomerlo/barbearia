@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
         */
 
         // Oracle
-        $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+        $barbeiro = //$oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
         // MongoDB
         /*
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
             "admin" => $is_admin,
             "id" => $id_barbeiro
         ];
-        $oracle->update($sql, $params);
+        //$oracle->update($sql, $params);
 
         // MongoDB
         /*

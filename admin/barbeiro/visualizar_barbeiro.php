@@ -29,14 +29,14 @@ try {
     */
 
     // Oracle
-    $barbeiro = $oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
+    $barbeiro = //$oracle->selectOne("SELECT * FROM barbeiros WHERE id = :id", ["id" => $id_barbeiro]);
 
     if (!$barbeiro) {
         echo "Barbeiro não encontrado!";
         exit();
     }
 
-    $cortes = $oracle->selectOne("SELECT COUNT(*) AS total_cortes FROM cortes WHERE id_barbeiro = :id", ["id" => $id_barbeiro]);
+    $cortes = //$oracle->selectOne("SELECT COUNT(*) AS total_cortes FROM cortes WHERE id_barbeiro = :id", ["id" => $id_barbeiro]);
     $total_cortes = $cortes->total_cortes ?? 0;
 
     // MongoDB

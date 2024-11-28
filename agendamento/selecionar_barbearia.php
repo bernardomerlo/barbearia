@@ -8,12 +8,11 @@ $agendado = $db->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cl
 */
 
 // Oracle
-$agendado = $oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+//$agendado = //$oracle->selectOne("SELECT * FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
 
 // MongoDB
-/*
+
 $agendado = $mongo->selectOne("cortes", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
-*/
 if ($agendado) {
     include "visualiza_agendado.php";
     exit();
@@ -24,12 +23,11 @@ $barbearias = $db->select("SELECT id, nome, id_endereco FROM barbearias");
 */
 
 // Oracle
-$barbearias = $oracle->select("SELECT id, nome, id_endereco FROM barbearias");
+//$barbearias = //$oracle->select("SELECT id, nome, id_endereco FROM barbearias");
 
 // MongoDB
-/*
 $barbearias = $mongo->select("barbearias", [], ["projection" => ["id" => 1, "nome" => 1, "id_endereco" => 1]]);
-*/ ?>
+ ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -130,18 +128,16 @@ $barbearias = $mongo->select("barbearias", [], ["projection" => ["id" => 1, "nom
                         $result = $db->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
                         */
 
-                        $result = $oracle->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
-
+                        //$result = //$oracle->selectOne("SELECT bairro, rua, numero FROM enderecos WHERE id = :id", ["id" => $barbearia->id_endereco]);
+var_dump($barbearia);
                         // MongoDB
-                        /*
-                        $result = $mongo->selectOne("enderecos", ["id" => $barbearia->id_endereco]);
-                        */
-
+                        $result = $mongo->selectOne("enderecos", ["_id" => $barbearia->id_endereco ?? null]);
+                        
                         $endereco = $result->bairro . ", " . $result->rua . ", " . $result->numero;
                         ?>
                         <p> <i class="fa-solid fa-location-dot"></i> <?= $endereco ?></p>
                         <form action="../index.php" method="get">
-                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->id); ?>">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($barbearia->_id); ?>">
                             <button type="submit" class="btn btn-primary">Acessar</button>
                         </form>
                     </div>

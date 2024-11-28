@@ -15,7 +15,7 @@ if (isset($_GET["id"])) {
     */
 
     // Oracle
-    $oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id]);
+    //$oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id]);
 
     // MongoDB
     /*

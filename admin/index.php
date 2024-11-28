@@ -15,7 +15,7 @@ $cortes = $db->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", [
 */
 
 // Oracle
-$cortes = $oracle->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
+$cortes = //$oracle->select("SELECT * FROM cortes WHERE id_barbeiro = :id_barbeiro", ["id_barbeiro" => $barbeiro->id]);
 
 // MongoDB
 /*
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_corte"])) {
     */
 
     // Oracle
-    $oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id_corte]);
+    //$oracle->delete("DELETE FROM cortes WHERE id = :id", ["id" => $id_corte]);
 
     // MongoDB
     /*

@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';  
+require_once __DIR__ . '/../vendor/autoload.php';
+
 class MongoDb
 {
     private MongoDB\Client $client;
@@ -37,17 +38,18 @@ class MongoDb
         return $result->getInsertedId();
     }
 
-    // Selecionar documentos
+    // Selecionar documentos (retorna um array de objetos)
     public function select(string $collection, array $filter = [], array $options = []): array
     {
         $result = $this->db->{$collection}->find($filter, $options);
-        return iterator_to_array($result);
+        return iterator_to_array($result, false); // false preserva o tipo de dado original
     }
 
-    // Selecionar um único documento
-    public function selectOne(string $collection, array $filter = []): ?array
+    // Selecionar um único documento (retorna um único objeto ou null)
+    public function selectOne(string $collection, array $filter = []): ?object
     {
-        return $this->db->{$collection}->findOne($filter);
+        $result = $this->db->{$collection}->findOne($filter);
+        return $result ? (object) $result : null; // Converte para objeto ou retorna null
     }
 
     // Atualizar documentos

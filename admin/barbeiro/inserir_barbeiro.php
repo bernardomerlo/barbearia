@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     "admin" => $is_admin,
                     "id_barbearia" => $_SESSION["user"]->id_barbearia
                 ];
-                $oracle->insert($sql, $params);
+                //$oracle->insert($sql, $params);
 
                 // MongoDB
                 /*

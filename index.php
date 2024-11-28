@@ -14,8 +14,8 @@ if (!isset($_GET["id"])) {
 }
 
 // $agendado = $db->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
-// $agendado = $collection->findOne(["cliente" => $_SERVER["REMOTE_ADDR"]]);
-$agendado = $oracle->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
+$agendado = $collection->findOne(["cliente" => $_SERVER["REMOTE_ADDR"]]);
+//$agendado = //$oracle->selectOne("SELECT id FROM cortes WHERE cliente = :cliente", ["cliente" => $_SERVER["REMOTE_ADDR"]]);
 
 if ($agendado) {
     $id = $agendado->id;
@@ -157,11 +157,10 @@ if ($agendado) {
                         echo htmlspecialchars($db->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome); 
                         */
 
-                    echo htmlspecialchars($oracle->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome);
+                    //echo htmlspecialchars($oracle->selectOne("SELECT nome FROM barbearias WHERE id = :id", ["id" => $_GET["id"]])->nome);
 
-                    /*
-                        echo htmlspecialchars($mongo->selectOne("barbearias", ["id" => $_GET["id"]])['nome']);
-                        */
+
+                    echo htmlspecialchars($mongo->selectOne("barbearias", ["id" => $_GET["id"]])['nome']);
                     ?>
                     </h1>
                     <div class="barbeiro-imagem">
@@ -177,11 +176,10 @@ if ($agendado) {
                                 $barbeiros = $db->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
                                 */
 
-                            $barbeiros = $oracle->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
+                            //$barbeiros = //$oracle->select("SELECT id, nome, foto FROM barbeiros WHERE id_barbearia = :id", ["id" => $_GET["id"]]);
 
-                            /*
+
                             $barbeiros = $mongo->select("barbeiros", ["id_barbearia" => $_GET["id"]]);
-                            */
 
                             foreach ($barbeiros as $barbeiro) {
                                 echo "<option value='" . htmlspecialchars($barbeiro->id) . "' data-foto='" . htmlspecialchars($barbeiro->foto) . "'>" . htmlspecialchars($barbeiro->nome) . "</option>";
@@ -210,11 +208,11 @@ if ($agendado) {
                                 $tipos_corte = $db->select("SELECT id, nome FROM tipos_cortes");
                             */
                             //Oracle
-                            $tipos_corte = $oracle->select("SELECT id, nome FROM tipos_cortes");
+                            // $tipos_corte = //$oracle->select("SELECT id, nome FROM tipos_cortes");
 
-                            /*
+
                             $tipos_corte = $mongo->select("tipos_cortes");
-                            */
+
 
                             foreach ($tipos_corte as $tipo_corte) {
                                 echo "<option value='" . htmlspecialchars($tipo_corte->id) . "'>" . htmlspecialchars($tipo_corte->nome) . "</option>";

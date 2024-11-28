@@ -25,7 +25,7 @@ if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {
 
 
     // Oracle
-    $horarios = $oracle->select(
+    $horarios = //$oracle->select(
         "SELECT h.horario 
         FROM horarios h 
         LEFT JOIN cortes c 

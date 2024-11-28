@@ -21,11 +21,11 @@ foreach ($barbeiros as $barbeiro) {
 */
 
 // Oracle
-$barbearia = $oracle->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
-$barbeiros = $oracle->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);
+$barbearia = //$oracle->selectOne("SELECT * FROM barbearias WHERE id = :id", ['id' => $id_barbearia]);
+$barbeiros = //$oracle->select("SELECT * FROM barbeiros WHERE id_barbearia = :id_barbearia AND id != :id", ['id_barbearia' => $id_barbearia, 'id' => $_SESSION["user"]->id]);
 
 foreach ($barbeiros as $barbeiro) {
-    $cortes = $oracle->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
+    $cortes = //$oracle->selectOne("SELECT COUNT(*) as total_cortes FROM cortes WHERE id_barbeiro = :id_barbeiro", ['id_barbeiro' => $barbeiro->id]);
     $barbeiro->total_cortes = $cortes->total_cortes;
 }
 

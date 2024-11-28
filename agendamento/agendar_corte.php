@@ -34,9 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     */
 
         // Oracle
-        $oracle->beginTransaction();
+        //$oracle->beginTransaction();
 
-        $id = $oracle->insert(
+        $id = //$oracle->insert(
             "INSERT INTO cortes (nome_cliente, telefone_cliente, data_corte, id_barbeiro, cliente, horario, tipo_corte) 
         VALUES (:nome_cliente, :telefone_cliente, :data, :id_barbeiro, :cliente, :horario, :tipo_corte)",
             [
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "tipo_corte" => $tipo_corte
             ]
         );
-        $oracle->endTransaction();
+        //$oracle->endTransaction();
 
         // MongoDB
         /*
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         */
 
         // Oracle
-        $oracle->rollBack();
+        //$oracle->rollBack();
         echo "Erro ao agendar corte: " . $e->getMessage();
     }
 }

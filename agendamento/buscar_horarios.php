@@ -20,6 +20,9 @@ if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {
         ["id_barbeiro" => $id_barbeiro, "data" => $data]
     );
     */
+    echo $id_barbeiro;
+    echo $data;
+
 
     // Oracle
     $horarios = $oracle->select(
@@ -52,7 +55,10 @@ if (isset($_GET["id_barbeiro"]) && isset($_GET["data"])) {
 
     $horariosDisponiveis = [];
     foreach ($horarios as $horario) {
-        $horariosDisponiveis[] = $horario->horario;
+        // Certificar-se de que o campo 'horario' está presente
+        if (isset($horario->horario)) {
+            $horariosDisponiveis[] = $horario->horario;
+        }
     }
 
     echo json_encode($horariosDisponiveis);

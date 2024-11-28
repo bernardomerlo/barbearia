@@ -8,4 +8,4 @@ include_once __DIR__ . '/../config/OracleDb.php';
 
 $db = Database::getInstance();
 $oracle = OracleDb::getInstance();
-$mongo = MongoDB::getInstance();
+// $mongo = MongoDB::getInstance();

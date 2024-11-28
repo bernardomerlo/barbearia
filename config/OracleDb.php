@@ -9,7 +9,7 @@ class OracleDb
     {
         try {
             // Conexão com o Oracle usando PDO
-            $this->conn = new PDO("oci:dbname=//localhost:1521/XE", "username", "password");
+            $this->conn = new PDO("oci:dbname=//localhost:1521/XE", "system", "root");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             throw new \Exception("Connection failed: " . $e->getMessage());
@@ -43,16 +43,43 @@ class OracleDb
     public function select(string $query, array $params = [], bool $isAssoc = false): array
     {
         $result_query = $this->query($query, $params);
+
+        // Se for para retornar como um array associativo
         if ($isAssoc) {
             return $result_query->fetchAll(PDO::FETCH_ASSOC);
         }
-        return $result_query->fetchAll(PDO::FETCH_OBJ);
+
+        // Se for para retornar como objeto, converta as chaves para minúsculas
+        $results = $result_query->fetchAll(PDO::FETCH_OBJ);
+        $lowercaseResults = [];
+
+        foreach ($results as $obj) {
+            $lowercaseObj = new stdClass();
+            foreach ($obj as $key => $value) {
+                // Converte o nome da propriedade para minúsculo
+                $lowercaseObj->{strtolower($key)} = $value;
+            }
+            $lowercaseResults[] = $lowercaseObj;
+        }
+
+        return $lowercaseResults;
     }
 
     public function selectOne(string $query, array $params = []): object|false
     {
         $result_query = $this->query($query, $params);
-        return $result_query->fetch(PDO::FETCH_OBJ);
+        $result = $result_query->fetch(PDO::FETCH_OBJ);
+
+        if ($result) {
+            // Converte as propriedades para minúsculas
+            $lowercaseResult = new stdClass();
+            foreach ($result as $key => $value) {
+                $lowercaseResult->{strtolower($key)} = $value;
+            }
+            return $lowercaseResult;
+        }
+
+        return false;
     }
 
     public function update(string $query, array $params = []): int

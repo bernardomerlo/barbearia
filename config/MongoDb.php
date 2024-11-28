@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../vendor/autoload.php';  
 class MongoDb
 {
     private MongoDB\Client $client;
